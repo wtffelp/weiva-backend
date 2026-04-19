@@ -4,11 +4,11 @@
 
 - [ ] **Usuário**
   - [x] CREATE
-  - [ ] READ (todos, por id, por email, por cpf, por telefone)
-  - [ ] UPDATE dados (nome, email, telefone, senha)
-  - [ ] UPDATE ativo → `PUT /usuarios/{id}/ativo`
-  - [ ] UPDATE role → `PUT /usuarios/{id}/role`
-  - [ ] DELETE
+  - [x] READ (todos, por id, por email, por cpf, por telefone)
+  - [x] UPDATE dados (nome, email, telefone, senha)
+  - [x] UPDATE ativo → `PUT /usuarios/{id}/ativo`
+  - [x] UPDATE role → `PUT /usuarios/{id}/role`
+  - [x] DELETE
 
 - [ ] **Farmácia**
   - [ ] Model

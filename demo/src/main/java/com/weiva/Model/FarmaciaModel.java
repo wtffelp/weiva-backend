@@ -2,7 +2,9 @@ package com.weiva.Model;
 
 public class FarmaciaModel {
     private int id;
+    private String cnpj;
     private String nome;
+    private String descricao;
     private double avalicao;
     private String imagem_perfil;
     private int fk_usuario_id;
@@ -12,8 +14,14 @@ public class FarmaciaModel {
     public int getId(){ return id; }
     public void setId(int id) { this.id = id; }
 
+    public String getCnpj() {return cnpj; }
+    public void setCnpj(String cnpj) { this.cnpj = cnpj; }
+
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
+
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
     public double getAvalicao() { return avalicao; }
     public void setAvaliacao(double avaliacao) { this.avalicao = avaliacao; }
