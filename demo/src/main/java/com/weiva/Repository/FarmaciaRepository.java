@@ -10,23 +10,24 @@ import com.weiva.Model.FarmaciaModel;
 
 public class FarmaciaRepository {
     Jdbi jdbi = Database.getJdbi();
-    public FarmaciaModel criarFarmacia(int id,String cpnj, String nome, String descricao, double avaliacao, String imagem_perfil) {
+    public FarmaciaModel criarFarmacia(int fk_usuario_id,String cnpj, String nome, String descricao, double avaliacao, String imagem_perfil) {
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("INSERT INTO farmacias (cnpj, nome, descricao, avaliacao, imagem_perfil) VALUES (:cpnj, :nome, :descricao, :avaliacao, :imagem_perfil")
-            .bind("cpnj", cpnj)
+            return handle.createUpdate("INSERT INTO farmacias (cnpj, nome, descricao, avaliacao, imagem_perfil, fk_usuario_id) VALUES (:cnpj, :nome, :descricao, :avaliacao, :imagem_perfil, :fk_usuario_id)")
+            .bind("cnpj", cnpj)
             .bind("nome", nome)
             .bind("descricao", descricao)
             .bind("avaliacao", avaliacao)
             .bind("imagem_perfil", imagem_perfil)
+            .bind("fk_usuario_id", fk_usuario_id)
             .execute();
         });
-        FarmaciaModel farmaciaModel = buscarPorCpnj(cpnj);
+        FarmaciaModel farmaciaModel = buscarPorCnpj(cnpj);
         return farmaciaModel;
     }
 
     public List<FarmaciaModel> buscarTodasAsFarmacias(){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM farmacias")
+            return handle.createQuery("SELECT * FROM farmacias WHERE ativo = 1")
             .mapToBean(FarmaciaModel.class)
             .list();
         });
@@ -34,7 +35,7 @@ public class FarmaciaRepository {
 
     public FarmaciaModel buscarPorId(int id) {
         FarmaciaModel farma = jdbi.withHandle(handle -> {
-            Optional<FarmaciaModel> result = handle.createQuery("SELECT * FROM farmacias WHERE id = :id")
+            Optional<FarmaciaModel> result = handle.createQuery("SELECT * FROM farmacias WHERE id = :id AND ativo = 1")
             .bind("id", id)
             .mapToBean(FarmaciaModel.class)
             .findOne();
@@ -43,10 +44,10 @@ public class FarmaciaRepository {
         return farma;
     }
 
-    public FarmaciaModel buscarPorCpnj(String cpnj) {
+    public FarmaciaModel buscarPorCnpj(String cnpj) {
         FarmaciaModel user = jdbi.withHandle(handle -> {
-            Optional<FarmaciaModel> result = handle.createQuery("SELECT * FROM farmacias WHERE cnpj = :cnpj")
-            .bind("cpnj", cpnj)
+            Optional<FarmaciaModel> result = handle.createQuery("SELECT * FROM farmacias WHERE cnpj = :cnpj AND ativo = 1")
+            .bind("cnpj", cnpj)
             .mapToBean(FarmaciaModel.class)
             .findOne();
             return result.orElse(null);
@@ -56,7 +57,7 @@ public class FarmaciaRepository {
 
     public List<FarmaciaModel> buscarPorNome(String nome) {
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM farmacias WHERE nome = :nome")
+            return handle.createQuery("SELECT * FROM farmacias WHERE nome = :nome AND ativo = 1")
             .bind("nome", nome)
             .mapToBean(FarmaciaModel.class)
             .list();
@@ -65,10 +66,39 @@ public class FarmaciaRepository {
 
     public List<FarmaciaModel> buscarPorAvalicao(double avaliacao) {
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM farmacias WHERE avaliacao = :avaliacao")
+            return handle.createQuery("SELECT * FROM farmacias WHERE avaliacao = :avaliacao AND ativo = 1")
             .bind("avaliacao", avaliacao)
             .mapToBean(FarmaciaModel.class)
             .list();
+        });
+    }
+    
+    public FarmaciaModel atualizarFarmacia(int id, String nome, String imagem_perfil) {
+        jdbi.withHandle(handle -> {
+            return handle.createUpdate("UPDATE farmacias SET nome = :nome, imagem_perfil = :imagem_perfil WHERE id = :id")
+            .bind("id", id)
+            .bind("nome", nome)
+            .bind("imagem_perfil", imagem_perfil)
+            .execute();
+        });
+        return buscarPorId(id);
+    }
+
+    public FarmaciaModel atualizarAtivo(int id, int ativo) {
+        jdbi.withHandle(handle -> {
+            return handle.createUpdate("UPDATE farmacias SET ativo = :ativo WHERE id = :id")
+            .bind("ativo", ativo)
+            .bind("id", id)
+            .execute();
+        });
+        return buscarPorId(id);
+    }
+
+    public void deletarFarmacia(int id) {
+        jdbi.withHandle(handle -> {
+            return handle.createUpdate("DELETE FROM farmacias WHERE id = :id")
+            .bind("id", id)
+            .execute();
         });
     }
 }
