@@ -88,7 +88,7 @@ public class UserRepository {
         return user;
     }
 
-    public UserModel atualizarAtivo(int id, int ativo){
+    public UserModel atualizarAtivoUser(int id, int ativo){
         jdbi.withHandle(handle -> {
             return handle.createUpdate("UPDATE usuarios SET ativo = :ativo WHERE id = :id")
             .bind("id", id)

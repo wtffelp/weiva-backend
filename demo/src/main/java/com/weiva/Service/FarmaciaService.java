@@ -32,6 +32,10 @@ public class FarmaciaService {
         return farmaciaRepository.buscarPorNome(nome);
     }
 
+    public List<FarmaciaModel> buscarPorAvaliacao(double avaliacao) {
+        return farmaciaRepository.buscarPorAvalicao(avaliacao);
+    }
+
     public FarmaciaModel atualizarFarmacia(int id, String nome, String imagem_perfil) {
         if (buscarPorId(id) != null) {
             return farmaciaRepository.atualizarFarmacia(id, nome, imagem_perfil);

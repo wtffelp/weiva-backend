@@ -8,6 +8,6 @@ public class Main {
     public static void main(String[] args) {
         Javalin javalin = Javalin.create().start(7000);
         UserController userController = new UserController();
-        userController.registrarRotas(javalin);
+        userController.userRoutes(javalin);
     }
 }

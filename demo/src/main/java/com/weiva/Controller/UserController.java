@@ -16,7 +16,7 @@ public class UserController {
     private static Gson gson = new GsonBuilder()
     .setExclusionStrategies(new AnnotationExclusionStrategy()).create();
     
-    public void registrarRotas(Javalin app){
+    public void userRoutes(Javalin app){
         app.get("/usuarios/{id}", ctx ->{
             int id = Integer.parseInt(ctx.pathParam("id"));
             UserModel user = userService.buscarPorId(id);
@@ -49,7 +49,14 @@ public class UserController {
 
         app.post("/usuarios", ctx -> {
             UserModel postUser = gson.fromJson(ctx.body(), UserModel.class);
-            userService.criarUsuario(postUser.getEmail(), postUser.getNome(), postUser.getCPF(), postUser.getTelefone(), postUser.getSenha(), postUser.getRole());
+            userService.criarUsuario(
+                postUser.getEmail(),
+                postUser.getNome(),
+                postUser.getCPF(),
+                postUser.getTelefone(),
+                postUser.getSenha(),
+                postUser.getRole()
+            );
             ctx.status(201);
         });
 
@@ -68,10 +75,10 @@ public class UserController {
 
         app.put("/usuarios/{id}/ativo", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
-            UserModel atualizarAtivo = gson.fromJson(ctx.body(), UserModel.class);
+            UserModel atualizarAtivoUser = gson.fromJson(ctx.body(), UserModel.class);
             userService.atualizarAtivo(
                 id,
-                atualizarAtivo.getAtivo()
+                atualizarAtivoUser.getAtivo()
             );
         });
 

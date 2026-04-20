@@ -54,7 +54,7 @@ public class UserService {
 
     public UserModel atualizarAtivo(int id, int ativo){
         if (buscarPorId(id) != null) {
-            return userRepository.atualizarAtivo(id, ativo);
+            return userRepository.atualizarAtivoUser(id, ativo);
         } else {
             throw new RuntimeException("Usuário não encontrado.");
         }
