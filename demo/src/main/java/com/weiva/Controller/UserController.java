@@ -17,13 +17,13 @@ public class UserController {
     .setExclusionStrategies(new AnnotationExclusionStrategy()).create();
     
     public void userRoutes(Javalin app){
-        app.get("/usuarios/{id}", ctx ->{
+        app.get("/usuario/{id}", ctx ->{
             int id = Integer.parseInt(ctx.pathParam("id"));
             UserModel user = userService.buscarPorId(id);
             String jsonConversor = gson.toJson(user);
             ctx.result(jsonConversor);
         });
-        app.get("/usuarios", ctx -> {
+        app.get("/usuario", ctx -> {
             String email = ctx.queryParam("email");
             String nome = ctx.queryParam("nome");
             String telefone = ctx.queryParam("telefone");
@@ -41,13 +41,13 @@ public class UserController {
                 UserModel user = userService.buscarPorCPF(cpf);
                 ctx.result(gson.toJson(user));
             } else {
-                List<UserModel> users = userService.buscarTodosOsUsuarios();
+                List<UserModel> users = userService.buscarTodosOsUsuario();
                 String jsonConversor = gson.toJson(users);
                 ctx.result(jsonConversor);
             }
         });
 
-        app.post("/usuarios", ctx -> {
+        app.post("/usuario", ctx -> {
             UserModel postUser = gson.fromJson(ctx.body(), UserModel.class);
             userService.criarUsuario(
                 postUser.getEmail(),
@@ -60,7 +60,7 @@ public class UserController {
             ctx.status(201);
         });
 
-        app.put("/usuarios/{id}", ctx -> {
+        app.put("/usuario/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             UserModel atualizarUser = gson.fromJson(ctx.body(), UserModel.class);
             userService.atualizarUsuario(
@@ -73,7 +73,7 @@ public class UserController {
             ctx.status(201);
         });
 
-        app.put("/usuarios/{id}/ativo", ctx -> {
+        app.put("/usuario/{id}/ativo", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             UserModel atualizarAtivoUser = gson.fromJson(ctx.body(), UserModel.class);
             userService.atualizarAtivo(
@@ -82,7 +82,7 @@ public class UserController {
             );
         });
 
-        app.put("/usuarios/{id}/role", ctx ->{
+        app.put("/usuario/{id}/role", ctx ->{
             int id = Integer.parseInt(ctx.pathParam("id"));
             UserModel atualizarRole = gson.fromJson(ctx.body(), UserModel.class);
             userService.atualizarRole(
@@ -91,7 +91,7 @@ public class UserController {
             );
         });
 
-        app.delete("/usuarios/{id}", ctx -> {
+        app.delete("/usuario/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             userService.deletarUsuario(id);
             ctx.status(204);

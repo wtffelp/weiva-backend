@@ -10,15 +10,15 @@ import com.weiva.Model.FarmaciaModel;
 
 public class FarmaciaRepository {
     Jdbi jdbi = Database.getJdbi();
-    public FarmaciaModel criarFarmacia(int fk_usuario_id,String cnpj, String nome, String descricao, double avaliacao, String imagem_perfil) {
+    public FarmaciaModel criarFarmacia(int fk_Usuario_id,String cnpj, String nome, String descricao, double avaliacao, String imagem_perfil) {
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("INSERT INTO farmacias (cnpj, nome, descricao, avaliacao, imagem_perfil, fk_usuario_id) VALUES (:cnpj, :nome, :descricao, :avaliacao, :imagem_perfil, :fk_usuario_id)")
+            return handle.createUpdate("INSERT INTO farmacias (cnpj, nome, descricao, avaliacao, imagem_perfil, fk_Usuario_id) VALUES (:cnpj, :nome, :descricao, :avaliacao, :imagem_perfil, :fk_Usuario_id)")
             .bind("cnpj", cnpj)
             .bind("nome", nome)
             .bind("descricao", descricao)
             .bind("avaliacao", avaliacao)
             .bind("imagem_perfil", imagem_perfil)
-            .bind("fk_usuario_id", fk_usuario_id)
+            .bind("fk_Usuario_id", fk_Usuario_id)
             .execute();
         });
         FarmaciaModel farmaciaModel = buscarPorCnpj(cnpj);

@@ -6,8 +6,8 @@
   - [x] CREATE
   - [x] READ (todos, por id, por email, por cpf, por telefone)
   - [x] UPDATE dados (nome, email, telefone, senha)
-  - [x] UPDATE ativo → `PUT /usuarios/{id}/ativo`
-  - [x] UPDATE role → `PUT /usuarios/{id}/role`
+  - [x] UPDATE ativo → `PUT /usuario/{id}/ativo`
+  - [x] UPDATE role → `PUT /usuario/{id}/role`
   - [x] DELETE
 
 - [ ] **Farmácia**
@@ -72,7 +72,7 @@
 ## Banco de dados
 
 - [ ] `schema.sql` finalizado
-  - [ ] Tabela `usuario`
+  - [ ] Tabela `Usuario`
   - [ ] Tabela `farmacia`
   - [ ] Tabela `categoria`
   - [ ] Tabela `produto`

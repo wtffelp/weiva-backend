@@ -8,9 +8,9 @@ import com.weiva.Repository.FarmaciaRepository;
 public class FarmaciaService {
     FarmaciaRepository farmaciaRepository = new FarmaciaRepository();
 
-    public FarmaciaModel criarFarmacia(int fk_usuario_id, String cnpj, String nome, String descricao, double avaliacao, String imagem_perfil) {
+    public FarmaciaModel criarFarmacia(int fk_Usuario_id, String cnpj, String nome, String descricao, double avaliacao, String imagem_perfil) {
         if (buscarPorCnpj(cnpj) == null) {
-            return farmaciaRepository.criarFarmacia(fk_usuario_id, cnpj, nome, descricao, avaliacao, imagem_perfil);
+            return farmaciaRepository.criarFarmacia(fk_Usuario_id, cnpj, nome, descricao, avaliacao, imagem_perfil);
         } else {
             throw new RuntimeException("CNPJ ja cadastrado.");
         }

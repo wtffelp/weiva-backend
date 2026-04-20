@@ -13,7 +13,7 @@ public class UserRepository {
     public UserModel criarUsuario(String email, String nome, String cpf, String telefone, String senha, String role) {
         jdbi.withHandle(handle -> {
             return handle.createUpdate("""
-                    INSERT INTO usuarios (email, nome, cpf, telefone, senha, role) VALUES (:email, :nome, :cpf, :telefone, :senha, :role)
+                    INSERT INTO Usuario (email, nome, cpf, telefone, senha, role) VALUES (:email, :nome, :cpf, :telefone, :senha, :role)
                     """)
                 .bind("email", email)
                 .bind("nome", nome)
@@ -27,9 +27,9 @@ public class UserRepository {
         return userModel;
     }
 
-    public List<UserModel> buscarTodosOsUsuarios(){
+    public List<UserModel> buscarTodosOsUsuario(){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM usuarios")
+            return handle.createQuery("SELECT * FROM Usuario")
             .mapToBean(UserModel.class)
             .list();
         });
@@ -37,7 +37,7 @@ public class UserRepository {
 
     public UserModel buscarPorEmail(String email){
         UserModel user = jdbi.withHandle(handle -> {
-            Optional<UserModel> result = handle.createQuery("SELECT * FROM usuarios WHERE email = :email")
+            Optional<UserModel> result = handle.createQuery("SELECT * FROM Usuario WHERE email = :email")
             .bind("email", email)
             .mapToBean(UserModel.class)
             .findOne();
@@ -48,7 +48,7 @@ public class UserRepository {
 
     public UserModel buscarPorId(int id){
         UserModel user = jdbi.withHandle(handle -> {
-            Optional<UserModel> result = handle.createQuery("SELECT * FROM usuarios WHERE id = :id")
+            Optional<UserModel> result = handle.createQuery("SELECT * FROM Usuario WHERE id = :id")
                 .bind("id", id)
                 .mapToBean(UserModel.class)
                 .findOne();
@@ -59,7 +59,7 @@ public class UserRepository {
 
     public List<UserModel> buscarPorNome(String nome){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM usuarios WHERE nome = :nome")
+            return handle.createQuery("SELECT * FROM Usuario WHERE nome = :nome")
             .bind("nome", nome)
             .mapToBean(UserModel.class)
             .list();
@@ -68,7 +68,7 @@ public class UserRepository {
 
     public UserModel buscarPorCPF(String CPF) {
         UserModel user = jdbi.withHandle(handle -> {
-            Optional<UserModel> reuslt = handle.createQuery("SELECT * FROM usuarios WHERE cpf = :cpf")
+            Optional<UserModel> reuslt = handle.createQuery("SELECT * FROM Usuario WHERE cpf = :cpf")
                 .bind("cpf", CPF)
                 .mapToBean(UserModel.class)
                 .findOne();
@@ -79,7 +79,7 @@ public class UserRepository {
 
     public UserModel buscarPorTelefone(String telefone){
         UserModel user = jdbi.withHandle(handle -> {
-            Optional<UserModel> result = handle.createQuery("SELECT * FROM usuarios WHERE telefone = :telefone")
+            Optional<UserModel> result = handle.createQuery("SELECT * FROM Usuario WHERE telefone = :telefone")
                 .bind("telefone", telefone)
                 .mapToBean(UserModel.class)
                 .findOne();
@@ -90,7 +90,7 @@ public class UserRepository {
 
     public UserModel atualizarAtivoUser(int id, int ativo){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("UPDATE usuarios SET ativo = :ativo WHERE id = :id")
+            return handle.createUpdate("UPDATE Usuario SET ativo = :ativo WHERE id = :id")
             .bind("id", id)
             .bind("ativo", ativo)
             .execute();
@@ -101,7 +101,7 @@ public class UserRepository {
 
     public UserModel autalizarUsuario(int id, String telefone, String email, String nome, String senha){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("UPDATE usuarios SET telefone = :telefone, email = :email, nome = :nome, senha = :senha WHERE id = :id")
+            return handle.createUpdate("UPDATE Usuario SET telefone = :telefone, email = :email, nome = :nome, senha = :senha WHERE id = :id")
                 .bind("telefone", telefone)
                 .bind("email", email)
                 .bind("nome", nome)
@@ -115,7 +115,7 @@ public class UserRepository {
 
     public UserModel atualizarRole(int id, String role){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("UPDATE usuarios SET role = :role WHERE id = :id")
+            return handle.createUpdate("UPDATE Usuario SET role = :role WHERE id = :id")
             .bind("role", role)
             .bind("id", id)
             .execute();
@@ -126,7 +126,7 @@ public class UserRepository {
 
     public void deletarUsuario(int id){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("DELETE FROM usuarios WHERE id = :id")
+            return handle.createUpdate("DELETE FROM Usuario WHERE id = :id")
                 .bind("id", id)
                 .execute();
         });

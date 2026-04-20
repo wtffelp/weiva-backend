@@ -19,8 +19,8 @@ public class UserService {
         }
     }
 
-    public List<UserModel> buscarTodosOsUsuarios(){
-        return userRepository.buscarTodosOsUsuarios();
+    public List<UserModel> buscarTodosOsUsuario(){
+        return userRepository.buscarTodosOsUsuario();
     }
 
     public UserModel buscarPorEmail(String email) {
