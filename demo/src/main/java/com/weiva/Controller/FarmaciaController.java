@@ -45,7 +45,7 @@ public class FarmaciaController {
         app.post("/farmacias", ctx -> {
             FarmaciaModel postFarma = gson.fromJson(ctx.body(), FarmaciaModel.class);
             farmaciaService.criarFarmacia(
-                postFarma.getFk_Usuario_id(),
+                postFarma.getFk_usuario_id(),
                 postFarma.getCnpj(),
                 postFarma.getNome(),
                 postFarma.getDescricao(),
