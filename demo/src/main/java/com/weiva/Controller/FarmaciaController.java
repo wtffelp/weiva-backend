@@ -13,7 +13,7 @@ import io.javalin.Javalin;
 public class FarmaciaController {
     FarmaciaService farmaciaService = new FarmaciaService();
     private static Gson gson = new GsonBuilder()
-    .setExclusionStrategies(new AnnotationExclusionStrategy()). create();
+    .setExclusionStrategies(new AnnotationExclusionStrategy()).create();
 
     public void farmaciaRoutes(Javalin app) {
         app.get("/farmacias/{id}", ctx -> {

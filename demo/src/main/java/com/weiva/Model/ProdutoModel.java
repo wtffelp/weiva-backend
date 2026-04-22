@@ -39,7 +39,7 @@ public class ProdutoModel {
     public int getFk_farmacia_id(){ return fk_farmacia_id; }
     public void setFk_farmacia_id(int fk_farmacia_id){ this.fk_farmacia_id = fk_farmacia_id; }
 
-    public int get(){ return fk_categoria_id; }
+    public int getFk_categoria_id(){ return fk_categoria_id; }
     public void setFk_categoria_id(int fk_categoria_id){ this.fk_categoria_id = fk_categoria_id;}
     
 }

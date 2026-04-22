@@ -68,26 +68,22 @@ public class ProdutoRepository {
         return prod;
     }
 
-    public ProdutoModel buscarPorFarmacia(int fk_farmacia_id){
-        ProdutoModel prod = jdbi.withHandle(handle -> {
-            Optional<ProdutoModel> result = handle.createQuery("SELECT * FROM produtos WHERE fk_farmacia_id = :fk_farmacia_id AND ativo = 1")
+    public List<ProdutoModel> buscarPorFarmacia(int fk_farmacia_id){
+        return jdbi.withHandle(handle -> {
+            return handle.createQuery("SELECT * FROM produtos WHERE fk_farmacia_id = :fk_farmacia_id AND ativo = 1")
                 .bind("fk_farmacia_id", fk_farmacia_id)
                 .mapToBean(ProdutoModel.class)
-                .findOne();
-            return result.orElse(null);
+                .list();
         });
-        return prod;
     }
 
-    public ProdutoModel buscarPorCategoria(int fk_categoria_id){
-        ProdutoModel prod = jdbi.withHandle(handle -> {
-            Optional<ProdutoModel> result = handle.createQuery("SELECT * FROM produtos WHERE fk_categoia_id AND ativo = 1")
+    public List<ProdutoModel> buscarPorCategoria(int fk_categoria_id){
+        return jdbi.withHandle(handle -> {
+            return handle.createQuery("SELECT * FROM produtos WHERE fk_categoia_id AND ativo = 1")
                 .bind("fk_categoria_id", fk_categoria_id)
                 .mapToBean(ProdutoModel.class)
-                .findOne();
-            return result.orElse(null);
+                .list();
         });
-        return prod;
     }
 
     public ProdutoModel atualizarProduto(int id, String nome, String descricao, double preco_unitario, String caminho_galeria, int fk_farmacia_id, int fk_categoria_id){

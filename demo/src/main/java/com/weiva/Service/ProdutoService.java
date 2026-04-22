@@ -32,11 +32,11 @@ public class ProdutoService {
         return produtoRepository.buscarPorId(id);
     }
 
-    public ProdutoModel buscarPorFarmacia(int fk_farmacia_id){
+    public List<ProdutoModel> buscarPorFarmacia(int fk_farmacia_id){
         return produtoRepository.buscarPorFarmacia(fk_farmacia_id);
     }
 
-    public ProdutoModel buscarPorCategoria(int fk_categoria_id){
+    public List<ProdutoModel> buscarPorCategoria(int fk_categoria_id){
         return produtoRepository.buscarPorCategoria(fk_categoria_id);
     }
 
@@ -48,7 +48,7 @@ public class ProdutoService {
         return produtoRepository.atualizarAtivo(id, ativo);
     }
 
-    public void deltarProduto(int id){
+    public void deletarProduto(int id){
         produtoRepository.deletarProduto(id);
     }
 }
