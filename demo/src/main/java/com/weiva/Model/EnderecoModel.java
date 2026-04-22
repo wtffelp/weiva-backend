@@ -8,18 +8,9 @@ public class EnderecoModel {
     private String cidade;
     private String estado;;
     private String cep;
-    private int fk_Usuario_id;
+    private int fk_usuario_id;
 
-    public EnderecoModel(int id, String logradouro, String numero, String bairro, String cidade, String estado, String cep, int fk_Usuario_id) {
-        this.id = id;
-        this.logradouro = logradouro;
-        this.numero = numero;
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.cep = cep;
-        this.fk_Usuario_id = fk_Usuario_id;
-    }
+    public EnderecoModel () {}
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -42,7 +33,7 @@ public class EnderecoModel {
     public String getCep() { return cep; }
     public void setCep(String cep) { this.cep = cep; }
 
-    public int getFk_Usuario_id() { return fk_Usuario_id; }
-    public void setFk_Usuario_id(int fk_Usuario_id) { this.fk_Usuario_id = fk_Usuario_id; }
+    public int getFk_usuario_id() { return fk_usuario_id; }
+    public void setFk_usuario_id(int fk_usuario_id) { this.fk_usuario_id = fk_usuario_id; }
     
 }
