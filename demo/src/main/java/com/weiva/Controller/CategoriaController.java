@@ -29,6 +29,7 @@ public class CategoriaController {
                 ctx.result(gson.toJson(cat));
             } else {
                 List<CategoriaModel> cat = categoriaService.buscarTodasAsCategorias();
+                ctx.result(gson.toJson(cat));
             }
         });
 
