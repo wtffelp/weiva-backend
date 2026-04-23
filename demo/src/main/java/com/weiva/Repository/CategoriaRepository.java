@@ -1,5 +1,7 @@
 package com.weiva.Repository;
 
+import java.util.List;
+
 import org.jdbi.v3.core.Jdbi;
 
 import com.weiva.Config.Database;
@@ -16,6 +18,14 @@ public class CategoriaRepository {
         });
         CategoriaModel categoriaModel = buscarPorNome(nome);
         return categoriaModel;
+    }
+
+    public List<CategoriaModel> buscarTodasAsCategorias(){
+        return jdbi.withHandle(handle -> {
+            return handle.createQuery("SELECT * FROM categorias")
+            .mapToBean(CategoriaModel.class)
+            .list();
+        });
     }
 
     public CategoriaModel buscarPorId(int id) {

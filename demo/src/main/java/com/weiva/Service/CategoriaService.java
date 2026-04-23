@@ -1,5 +1,7 @@
 package com.weiva.Service;
 
+import java.util.List;
+
 import com.weiva.Model.CategoriaModel;
 import com.weiva.Repository.CategoriaRepository;
 
@@ -12,6 +14,10 @@ public class CategoriaService {
         } else {
             throw new RuntimeException("Categoria ja cadastrada.");
         }
+    }
+
+    public List<CategoriaModel> buscarTodasAsCategorias(){
+        return buscarTodasAsCategorias();
     }
 
     public CategoriaModel buscarPorId(int id) {
