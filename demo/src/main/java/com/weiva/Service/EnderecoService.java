@@ -12,7 +12,7 @@ public class EnderecoService {
         return enderecoRespository.criarEndereco(id, logradouro, numero, bairro, cidade, estado, cep, fk_usuario_id);
     }
 
-    public List<EnderecoModel> buscarPorUsuarios(int fk_usuario_id){
+    public List<EnderecoModel> buscarPorUsuario(int fk_usuario_id){
         return enderecoRespository.buscarPorUsuario(fk_usuario_id);
     }
 
