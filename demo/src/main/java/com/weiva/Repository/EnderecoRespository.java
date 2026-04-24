@@ -38,7 +38,7 @@ public class EnderecoRespository {
 
     public EnderecoModel buscarPorId(int id){
         EnderecoModel ende = jdbi.withHandle(handle -> {
-            Optional<EnderecoModel> result = handle.createQuery("SELECTE * FROM enderecos WHERE id = :id")
+            Optional<EnderecoModel> result = handle.createQuery("SELECT * FROM enderecos WHERE id = :id")
                 .bind("id", id)
                 .mapToBean(EnderecoModel.class)
                 .findOne();

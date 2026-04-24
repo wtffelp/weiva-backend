@@ -14,18 +14,30 @@ public class EnderecoController {
     .setExclusionStrategies(new AnnotationExclusionStrategy()).create();
 
     public void enderecoRoutes(Javalin app){
-        app.get("/enderecos/usuario/{id}", ctx -> {
-            int fk_usuario_id = Integer.parseInt(ctx.pathParam("id"));
-            ctx.result(gson.toJson(enderecoService.buscarPorUsuario(fk_usuario_id)));
+        app.get("/enderecos/me", ctx -> {
+            String userId = ctx.attribute("user");
+            ctx.result(gson.toJson(enderecoService.buscarPorUsuario(Integer.parseInt(userId))));
         });
 
         app.get("/enderecos/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
-            ctx.result(gson.toJson(enderecoService.buscarPorId(id)));
+            String userId = ctx.attribute("user");
+            EnderecoModel end = enderecoService.buscarPorId(id);
+            if (end == null || end.getFk_usuario_id() != Integer.parseInt(userId)) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
+            ctx.result(gson.toJson(end));
         });
 
         app.put("/enderecos/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
+            String userId = ctx.attribute("user");
+            EnderecoModel existente = enderecoService.buscarPorId(id);
+            if (existente == null || existente.getFk_usuario_id() != Integer.parseInt(userId)) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             EnderecoModel end = gson.fromJson(ctx.body(), EnderecoModel.class);
             enderecoService.atualizarEndereco(
                 id,
@@ -39,7 +51,7 @@ public class EnderecoController {
         });
 
         app.post("/enderecos", ctx -> {
-
+            String userId = ctx.attribute("user"); 
             EnderecoModel end = gson.fromJson(ctx.body(), EnderecoModel.class);
             enderecoService.criarEndereco(
                 end.getLogradouro(),
@@ -48,13 +60,20 @@ public class EnderecoController {
                 end.getCidade(),
                 end.getEstado(),
                 end.getCep(),
-                end.getFk_usuario_id()
+                Integer.parseInt(userId)
             );
             ctx.status(201);
         });
 
         app.delete("/enderecos/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
+            String userId = ctx.attribute("user");
+            EnderecoModel existente = enderecoService.buscarPorId(id);
+            if (existente == null || existente.getFk_usuario_id() != Integer.parseInt(userId)) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
+
             enderecoService.deletarEndereco(id);
             ctx.status(204);
         });

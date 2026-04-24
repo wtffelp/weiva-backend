@@ -44,12 +44,15 @@ public class UserService {
     }
 
     public UserModel atualizarUsuario(int id, String telefone, String email, String nome, String senha){
-        if (buscarPorId(id) != null) {
-            String hashedPassword = BCrypt.withDefaults().hashToString(12, senha.toCharArray());
-            return userRepository.autalizarUsuario(id, telefone, email, nome, hashedPassword);
-        } else {
+    UserModel user = buscarPorId(id);
+        if (user == null) {
             throw new RuntimeException("Usuário não encontrado.");
         }
+        String hashedPassword = null;
+        if (senha != null && !senha.isEmpty()) {
+            hashedPassword = BCrypt.withDefaults().hashToString(12, senha.toCharArray());
+        }
+        return userRepository.autalizarUsuario(id, telefone, email, nome, hashedPassword);
     }
 
     public UserModel atualizarAtivo(int id, int ativo){

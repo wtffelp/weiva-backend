@@ -13,7 +13,7 @@ public class ProdutoRepository {
 
     public ProdutoModel criarProduto(int id, String nome, String descricao, double preco_unitario, String caminho_galeria, int fk_farmacia_id, int fk_categoria_id){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("INSERT INTO produtos (nome, descricao, preco_unitario, caminho_galeria, fk_farmacia_id, fk_categoria_id) VALUES (:nome, :descricao, :preco_unitario, : caminho_galeria, :fk_farmacia_id, :fk_categoria_id)")
+            return handle.createUpdate("INSERT INTO produtos (nome, descricao, preco_unitario, caminho_galeria, fk_farmacia_id, fk_categoria_id) VALUES (:nome, :descricao, :preco_unitario, :caminho_galeria, :fk_farmacia_id, :fk_categoria_id)")
                 .bind("nome", nome)
                 .bind("descricao", descricao)
                 .bind("preco_unitario", preco_unitario)
@@ -114,6 +114,7 @@ public class ProdutoRepository {
     public void deletarProduto(int id){
         jdbi.withHandle(handle -> {
             return handle.createUpdate("DELETE FROM produtos WHERE id = :id")
+            .bind("id", id)
             .execute();
         });
     }

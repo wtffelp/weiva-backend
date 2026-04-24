@@ -16,6 +16,9 @@ public class AuthMiddleware implements Handler{
 
         boolean rotaPublica = 
         path.startsWith("/auth") || 
+        (path.startsWith("/produto") && ctx.method() == HandlerType.GET) ||
+        (path.startsWith("/farmacias") && ctx.method() == HandlerType.GET) ||
+        (path.startsWith("/categorias") && ctx.method() == HandlerType.GET) ||
         (path.startsWith("/usuario") && ctx.method() == HandlerType.POST);
 
         if (rotaPublica) return;

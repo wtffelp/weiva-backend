@@ -5,11 +5,7 @@ public class CategoriaModel {
     private String nome;
     private String descricao;
 
-    public CategoriaModel(int id, String nome, String descricao) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-    }
+    public CategoriaModel() {}
 
     public int getId() {
         return id;

@@ -80,7 +80,7 @@ public class ProdutoController {
             );
         });
 
-        app.put("/produto/{id}/atvo", ctx -> {
+        app.put("/produto/{id}/ativo", ctx -> {
             String role = ctx.attribute("role");
             if (!role.equals("admin") && !role.equals("super_admin")) {
                 ctx.status(403).result("Acesso negado");

@@ -17,7 +17,7 @@ public class CategoriaService {
     }
 
     public List<CategoriaModel> buscarTodasAsCategorias(){
-        return buscarTodasAsCategorias();
+        return categoriaRepository.buscarTodasAsCategorias();
     }
 
     public CategoriaModel buscarPorId(int id) {
