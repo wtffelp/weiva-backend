@@ -24,10 +24,24 @@ public class EnderecoController {
             ctx.result(gson.toJson(enderecoService.buscarPorId(id)));
         });
 
+        app.put("/enderecos/{id}", ctx -> {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            EnderecoModel end = gson.fromJson(ctx.body(), EnderecoModel.class);
+            enderecoService.atualizarEndereco(
+                id,
+                end.getLogradouro(),
+                end.getNumero(),
+                end.getBairro(),
+                end.getCidade(),
+                end.getCep()
+            );
+            ctx.status(200);
+        });
+
         app.post("/enderecos", ctx -> {
+
             EnderecoModel end = gson.fromJson(ctx.body(), EnderecoModel.class);
             enderecoService.criarEndereco(
-                end.getId(),
                 end.getLogradouro(),
                 end.getNumero(),
                 end.getBairro(),

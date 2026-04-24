@@ -8,8 +8,8 @@ import com.weiva.Repository.EnderecoRespository;
 public class EnderecoService {
     EnderecoRespository enderecoRespository = new EnderecoRespository();
 
-    public EnderecoModel criarEndereco(int id, String logradouro, String numero, String bairro, String cidade, String estado, String cep, int fk_usuario_id) {
-        return enderecoRespository.criarEndereco(id, logradouro, numero, bairro, cidade, estado, cep, fk_usuario_id);
+    public EnderecoModel criarEndereco(String logradouro, String numero, String bairro, String cidade, String estado, String cep, int fk_usuario_id) {
+        return enderecoRespository.criarEndereco(logradouro, numero, bairro, cidade, estado, cep, fk_usuario_id);
     }
 
     public List<EnderecoModel> buscarPorUsuario(int fk_usuario_id){

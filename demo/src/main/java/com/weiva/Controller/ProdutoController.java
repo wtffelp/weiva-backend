@@ -44,6 +44,11 @@ public class ProdutoController {
         });
 
         app.post("/produto", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("admin") && !role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             ProdutoModel postProd = gson.fromJson(ctx.body(), ProdutoModel.class);
             produtoService.criarProduto(
                 postProd.getId(), 
@@ -57,6 +62,11 @@ public class ProdutoController {
         });
 
         app.put("/produto/{id}", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("admin") && !role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             ProdutoModel atualizarProduto = gson.fromJson(ctx.body(), ProdutoModel.class);
             produtoService.atualizarProduto(
@@ -71,6 +81,11 @@ public class ProdutoController {
         });
 
         app.put("/produto/{id}/atvo", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("admin") && !role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             ProdutoModel atualizarProdutoAtivo = gson.fromJson(ctx.body(), ProdutoModel.class);
             produtoService.atualizarAtivo(
@@ -80,6 +95,11 @@ public class ProdutoController {
         });
 
         app.delete("/produto/{id}", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             produtoService.deletarProduto(id);
             ctx.status(204);

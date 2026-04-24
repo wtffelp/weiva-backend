@@ -19,6 +19,12 @@ public class UserController {
     public void userRoutes(Javalin app){
         app.get("/usuario/{id}", ctx ->{
             int id = Integer.parseInt(ctx.pathParam("id"));
+            String role = ctx.attribute("role");
+            String userIdToken = ctx.attribute("user");
+            if (!role.equals("super_admin") && !userIdToken.equals(String.valueOf(id))) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             UserModel user = userService.buscarPorId(id);
             String jsonConversor = gson.toJson(user);
             ctx.result(jsonConversor);
@@ -53,6 +59,11 @@ public class UserController {
         });
 
         app.post("/usuario", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             UserModel postUser = gson.fromJson(ctx.body(), UserModel.class);
             userService.criarUsuario(
                 postUser.getEmail(),
@@ -67,6 +78,12 @@ public class UserController {
 
         app.put("/usuario/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
+            String role = ctx.attribute("role");
+            String userIdToken = ctx.attribute("user");
+            if (!role.equals("super_admin") && !userIdToken.equals(String.valueOf(id))) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             UserModel atualizarUser = gson.fromJson(ctx.body(), UserModel.class);
             userService.atualizarUsuario(
                 id,
@@ -79,6 +96,11 @@ public class UserController {
         });
 
         app.put("/usuario/{id}/ativo", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             UserModel atualizarAtivoUser = gson.fromJson(ctx.body(), UserModel.class);
             userService.atualizarAtivo(
@@ -87,7 +109,11 @@ public class UserController {
             );
         });
 
-        app.put("/usuario/{id}/role", ctx ->{
+        app.put("/usuario/{id}/role", ctx ->{String role = ctx.attribute("role");
+            if (!role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             UserModel atualizarRole = gson.fromJson(ctx.body(), UserModel.class);
             userService.atualizarRole(
@@ -97,6 +123,11 @@ public class UserController {
         });
 
         app.delete("/usuario/{id}", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             userService.deletarUsuario(id);
             ctx.status(204);

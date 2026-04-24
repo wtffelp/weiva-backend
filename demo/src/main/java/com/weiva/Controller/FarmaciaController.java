@@ -44,7 +44,7 @@ public class FarmaciaController {
 
         app.post("/farmacias", ctx -> {
             String role = ctx.attribute("role");
-            if (!role.equals("admin") || !role.equals("super_admin")) {
+            if (!role.equals("admin") && !role.equals("super_admin")) {
                 ctx.status(403).result("Acesso negado");
                 return;
             }
@@ -62,7 +62,7 @@ public class FarmaciaController {
 
         app.put("/farmacias/{id}", ctx -> {
             String role = ctx.attribute("role");
-            if(!role.equals("admin") || !role.equals("super_admin")){
+            if(!role.equals("admin") && !role.equals("super_admin")){
                 ctx.status(403).result("Acesso negado");
                 return;
             }

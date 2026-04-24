@@ -34,6 +34,11 @@ public class CategoriaController {
         });
 
         app.post("/categorias", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("admin") && !role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             CategoriaModel postCat = gson.fromJson(ctx.body(), CategoriaModel.class);
             categoriaService.criarCategoria(
                 postCat.getNome(),
@@ -42,6 +47,11 @@ public class CategoriaController {
         });
 
         app.delete("/categorias/{id}", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("admin") && !role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             categoriaService.deletarCategoria(id);
             ctx.status(204);

@@ -10,7 +10,7 @@ import com.weiva.Model.EnderecoModel;
 
 public class EnderecoRespository {
     Jdbi jdbi = Database.getJdbi();
-    public EnderecoModel criarEndereco(int id, String logradouro, String numero, String bairro, String cidade, String estado, String cep, int fk_usuario_id){
+    public EnderecoModel criarEndereco(String logradouro, String numero, String bairro, String cidade, String estado, String cep, int fk_usuario_id){
         return jdbi.withHandle(handle -> {
             return handle.createUpdate("INSERT INTO enderecos (logradouro, numero, bairro, cidade, estado, cep, fk_usuario_id) VALUES (:logradouro, :numero, :bairro, :cidade, :estado, :cep, :fk_usuario_id)")
                 .bind("logradouro", logradouro)
