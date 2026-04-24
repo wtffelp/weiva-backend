@@ -24,6 +24,6 @@ public class Database {
             }
             return jdbi;
         }
-        return null;
+        return jdbi;
     }
 }

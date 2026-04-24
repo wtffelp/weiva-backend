@@ -1,27 +1,29 @@
 package com.weiva.JWT;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import io.javalin.http.UnauthorizedResponse;
+import io.javalin.http.HandlerType;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
 public class AuthMiddleware implements Handler{
     private JWTService jwtService = new JWTService();
-
+    
     @Override
     public void handle(Context ctx) throws Exception {
         String path = ctx.path();
 
-        // liberar rotas publicas
-        if (path.startsWith("/auth") || path.equals("/usuario") && ctx.method().equals("POST")) {
-            return;
-        }
+        boolean rotaPublica = 
+        path.startsWith("/auth") || 
+        (path.startsWith("/usuario") && ctx.method() == HandlerType.POST);
+
+        if (rotaPublica) return;
 
         String header = ctx.header("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")) {
-            ctx.status(401).result("Token não enviado");
-            return;
+            throw new UnauthorizedResponse("Token nao enviado");
         }
 
         String token = header.substring(7);
@@ -35,7 +37,7 @@ public class AuthMiddleware implements Handler{
             ctx.attribute("user", user);
             ctx.attribute("role", role);
         } catch (Exception e){
-            ctx.status(401).result("Token Invalido");
+            throw new UnauthorizedResponse("Token Invalido");
         }
     }
 }

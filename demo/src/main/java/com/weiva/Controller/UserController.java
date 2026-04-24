@@ -24,6 +24,11 @@ public class UserController {
             ctx.result(jsonConversor);
         });
         app.get("/usuario", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("super_admin")){
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             String email = ctx.queryParam("email");
             String nome = ctx.queryParam("nome");
             String telefone = ctx.queryParam("telefone");

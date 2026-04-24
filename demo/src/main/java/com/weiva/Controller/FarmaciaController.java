@@ -43,6 +43,11 @@ public class FarmaciaController {
         });
 
         app.post("/farmacias", ctx -> {
+            String role = ctx.attribute("role");
+            if (!role.equals("admin") || !role.equals("super_admin")) {
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             FarmaciaModel postFarma = gson.fromJson(ctx.body(), FarmaciaModel.class);
             farmaciaService.criarFarmacia(
                 postFarma.getFk_usuario_id(),
@@ -56,6 +61,11 @@ public class FarmaciaController {
         });
 
         app.put("/farmacias/{id}", ctx -> {
+            String role = ctx.attribute("role");
+            if(!role.equals("admin") || !role.equals("super_admin")){
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             FarmaciaModel atualizarFarmacia = gson.fromJson(ctx.body(), FarmaciaModel.class);
             farmaciaService.atualizarFarmacia(
@@ -66,6 +76,11 @@ public class FarmaciaController {
         });
 
         app.put("/farmacias/{id}/ativo", ctx -> {
+            String role = ctx.attribute("role");
+            if(!role.equals("super_admin")){
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             FarmaciaModel atualizarAtivoFarma = gson.fromJson(ctx.body(), FarmaciaModel.class);
             farmaciaService.atualizarAtivo(
@@ -75,6 +90,11 @@ public class FarmaciaController {
         });
 
         app.delete("/farmacias/{id}", ctx -> {
+            String role = ctx.attribute("role");
+            if(!role.equals("super_admin")){
+                ctx.status(403).result("Acesso negado");
+                return;
+            }
             int id = Integer.parseInt(ctx.pathParam("id"));
             farmaciaService.deletarFarmacia(id);
             ctx.status(204);

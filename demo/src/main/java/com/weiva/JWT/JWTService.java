@@ -14,7 +14,7 @@ public class JWTService {
         return JWT.create()
                 .withSubject(userId)
                 .withClaim("role", role)
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 7))
                 .sign(Algorithm.HMAC256(SECRET));
     }
 
