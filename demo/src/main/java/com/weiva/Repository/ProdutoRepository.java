@@ -13,7 +13,7 @@ public class ProdutoRepository {
 
     public ProdutoModel criarProduto(int id, String nome, String descricao, double preco_unitario, String caminho_galeria, int fk_farmacia_id, int fk_categoria_id){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("INSERT INTO produtos (nome, descricao, preco_unitario, caminho_galeria, fk_farmacia_id, fk_categoria_id) VALUES (:nome, :descricao, :preco_unitario, :caminho_galeria, :fk_farmacia_id, :fk_categoria_id)")
+            return handle.createUpdate("INSERT INTO  (nome, descricao, preco_unitario, caminho_galeria, fk_farmacia_id, fk_categoria_id) VALUES (:nome, :descricao, :preco_unitario, :caminho_galeria, :fk_farmacia_id, :fk_categoria_id)")
                 .bind("nome", nome)
                 .bind("descricao", descricao)
                 .bind("preco_unitario", preco_unitario)
@@ -28,7 +28,7 @@ public class ProdutoRepository {
 
     public List<ProdutoModel> buscarTodosOsProdutos(){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM produtos WHERE ativo = 1")
+            return handle.createQuery("SELECT * FROM produto WHERE ativo = 1")
             .mapToBean(ProdutoModel.class)
             .list();
         });
@@ -36,7 +36,7 @@ public class ProdutoRepository {
 
     public ProdutoModel buscarPorNome(String nome){
         ProdutoModel prod = jdbi.withHandle(handle -> {
-            Optional<ProdutoModel> result = handle.createQuery("SELECT * FROM produtos WHERE nome = :nome AND ativo = 1")
+            Optional<ProdutoModel> result = handle.createQuery("SELECT * FROM produto WHERE nome = :nome AND ativo = 1")
                 .bind("nome", nome)
                 .mapToBean(ProdutoModel.class)
                 .findOne();
@@ -48,7 +48,7 @@ public class ProdutoRepository {
     public ProdutoModel buscarPorNomeEFarmacia(String nome, int fk_farmacia_id) {
         return jdbi.withHandle(handle -> {
             Optional<ProdutoModel> result = handle.createQuery(
-            "SELECT * FROM produtos WHERE nome = :nome AND fk_farmacia_id = :fk_farmacia_id")
+            "SELECT * FROM produto WHERE nome = :nome AND fk_farmacia_id = :fk_farmacia_id")
                 .bind("nome", nome)
                 .bind("fk_farmacia_id", fk_farmacia_id)
                 .mapToBean(ProdutoModel.class)
@@ -59,7 +59,7 @@ public class ProdutoRepository {
 
     public ProdutoModel buscarPorId(int id){
         ProdutoModel prod = jdbi.withHandle(handle -> {
-            Optional<ProdutoModel> result = handle.createQuery("SELECT * FROM produtos WHERE id = :id")
+            Optional<ProdutoModel> result = handle.createQuery("SELECT * FROM produto WHERE id = :id")
                 .bind("id", id)
                 .mapToBean(ProdutoModel.class)
                 .findOne();
@@ -70,7 +70,7 @@ public class ProdutoRepository {
 
     public List<ProdutoModel> buscarPorFarmacia(int fk_farmacia_id){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM produtos WHERE fk_farmacia_id = :fk_farmacia_id AND ativo = 1")
+            return handle.createQuery("SELECT * FROM produto WHERE fk_farmacia_id = :fk_farmacia_id AND ativo = 1")
                 .bind("fk_farmacia_id", fk_farmacia_id)
                 .mapToBean(ProdutoModel.class)
                 .list();
@@ -79,7 +79,7 @@ public class ProdutoRepository {
 
     public List<ProdutoModel> buscarPorCategoria(int fk_categoria_id){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM produtos WHERE fk_categoia_id AND ativo = 1")
+            return handle.createQuery("SELECT * FROM produto WHERE fk_categoia_id AND ativo = 1")
                 .bind("fk_categoria_id", fk_categoria_id)
                 .mapToBean(ProdutoModel.class)
                 .list();
@@ -88,7 +88,7 @@ public class ProdutoRepository {
 
     public ProdutoModel atualizarProduto(int id, String nome, String descricao, double preco_unitario, String caminho_galeria, int fk_farmacia_id, int fk_categoria_id){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("UPDATE produtos SET nome = :nome, descricao = :descricao, preco_unitario = :preco_unitario, caminho_galeria = :caminho_galeria, fk_farmacia_id = :farmacia_id, fk_categoria_id = :fk_categoria_id WHERE id = :id")
+            return handle.createUpdate("UPDATE produto SET nome = :nome, descricao = :descricao, preco_unitario = :preco_unitario, caminho_galeria = :caminho_galeria, fk_farmacia_id = :farmacia_id, fk_categoria_id = :fk_categoria_id WHERE id = :id")
                 .bind("nome", nome)
                 .bind("descricao", descricao)
                 .bind("preco_unitario", preco_unitario)
@@ -103,7 +103,7 @@ public class ProdutoRepository {
 
     public ProdutoModel atualizarAtivo(int id, int ativo) {
         jdbi.withHandle(handle -> {
-        return handle.createUpdate("UPDATE produtos SET ativo = :ativo WHERE id = :id")
+        return handle.createUpdate("UPDATE produto SET ativo = :ativo WHERE id = :id")
             .bind("ativo", ativo)
             .bind("id", id)
             .execute();
@@ -113,7 +113,7 @@ public class ProdutoRepository {
 
     public void deletarProduto(int id){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("DELETE FROM produtos WHERE id = :id")
+            return handle.createUpdate("DELETE FROM produto WHERE id = :id")
             .bind("id", id)
             .execute();
         });

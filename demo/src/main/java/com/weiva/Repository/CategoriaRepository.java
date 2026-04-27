@@ -11,7 +11,7 @@ public class CategoriaRepository {
     Jdbi jdbi = Database.getJdbi();
     public CategoriaModel criarCategoria(String nome, String descricao) {
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("INSERT INTO categorias (nome, descricao) VALUES (:nome, :descricao)")
+            return handle.createUpdate("INSERT INTO categoria (nome, descricao) VALUES (:nome, :descricao)")
             .bind("nome", nome)
             .bind("descricao", descricao)
             .execute();
@@ -22,7 +22,7 @@ public class CategoriaRepository {
 
     public List<CategoriaModel> buscarTodasAsCategorias(){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM categorias")
+            return handle.createQuery("SELECT * FROM categoria")
             .mapToBean(CategoriaModel.class)
             .list();
         });
@@ -30,7 +30,7 @@ public class CategoriaRepository {
 
     public CategoriaModel buscarPorId(int id) {
         CategoriaModel cat = jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM categorias WHERE id = :id")
+            return handle.createQuery("SELECT * FROM categoria WHERE id = :id")
             .bind("id", id)
             .mapToBean(CategoriaModel.class)
             .findOne()
@@ -41,7 +41,7 @@ public class CategoriaRepository {
 
     public CategoriaModel buscarPorNome(String nome) {
         CategoriaModel cat = jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM categorias WHERE nome = :nome")
+            return handle.createQuery("SELECT * FROM categoria WHERE nome = :nome")
             .bind("nome", nome)
             .mapToBean(CategoriaModel.class)
             .findOne()
@@ -54,7 +54,7 @@ public class CategoriaRepository {
         CategoriaModel cat = buscarPorId(id);
         if (cat != null) {
             jdbi.withHandle(handle -> {
-                return handle.createUpdate("DELETE FROM categorias WHERE id = :id")
+                return handle.createUpdate("DELETE FROM categoria WHERE id = :id")
                 .bind("id", id)
                 .execute();
             });
