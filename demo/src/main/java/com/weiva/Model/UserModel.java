@@ -6,6 +6,7 @@ import com.weiva.Annotations.Exclude;
 
 public class UserModel {
     private int id;
+    @Exclude
     private String senha;
     private Timestamp criado_em;
     private String nome;
