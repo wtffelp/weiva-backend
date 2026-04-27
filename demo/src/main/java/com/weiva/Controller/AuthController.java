@@ -13,12 +13,12 @@ import io.javalin.Javalin;
 public class AuthController {
     private UserService userService = new UserService();
     private JWTService jwtService = new JWTService();
-    private Gson gson = new GsonBuilder()
+    private Gson gsonSemSenha = new GsonBuilder()
     .setExclusionStrategies(new AnnotationExclusionStrategy()).create();
-
+    private static Gson gsonComSenha = new Gson();
     public void authRoutes(Javalin app) {
         app.post("/auth/login", ctx -> {
-            UserModel user = gson.fromJson(ctx.body(), UserModel.class);
+            UserModel user = gsonComSenha.fromJson(ctx.body(), UserModel.class);
             UserModel userDB = userService.buscarPorEmail(user.getEmail());
 
             if (userDB == null || !BCrypt.verifyer().verify(user.getSenha().toCharArray(), userDB.getSenha()).verified) {
@@ -39,7 +39,7 @@ public class AuthController {
         });
 
         app.post("/auth/register", ctx -> {
-            UserModel body = gson.fromJson(ctx.body(), UserModel.class);
+            UserModel body = gsonComSenha.fromJson(ctx.body(), UserModel.class);
             UserModel novo = userService.criarUsuario(
                 body.getEmail(),
                 body.getNome(),
@@ -48,7 +48,7 @@ public class AuthController {
                 body.getSenha(),
                 "usuario"
             );
-            ctx.status(201).result(gson.toJson(novo));
+            ctx.status(201).result(gsonSemSenha.toJson(novo));
         });
     }
 }

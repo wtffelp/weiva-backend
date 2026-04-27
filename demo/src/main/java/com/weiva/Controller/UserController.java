@@ -13,8 +13,9 @@ import io.javalin.Javalin;
 
 public class UserController {
     UserService userService = new UserService();
-    private static Gson gson = new GsonBuilder()
+    private static Gson gsonSemSenha = new GsonBuilder()
     .setExclusionStrategies(new AnnotationExclusionStrategy()).create();
+    private static Gson gsonComSenha = new Gson();
     
     public void userRoutes(Javalin app){
         app.get("/usuario/{id}", ctx ->{
@@ -26,7 +27,7 @@ public class UserController {
                 return;
             }
             UserModel user = userService.buscarPorId(id);
-            String jsonConversor = gson.toJson(user);
+            String jsonConversor = gsonSemSenha.toJson(user);
             ctx.result(jsonConversor);
         });
         app.get("/usuario", ctx -> {
@@ -41,19 +42,19 @@ public class UserController {
             String cpf = ctx.queryParam("cpf");
             if (email != null) {
                 UserModel user = userService.buscarPorEmail(email);
-                ctx.result(gson.toJson(user));
+                ctx.result(gsonSemSenha.toJson(user));
             } else if (nome != null) {
                 List<UserModel> user = userService.buscarPorNome(nome);
-                ctx.result(gson.toJson(user));
+                ctx.result(gsonSemSenha.toJson(user));
             } else if (telefone != null){
                 UserModel user = userService.buscarPorTelefone(telefone);
-                ctx.result(gson.toJson(user));
+                ctx.result(gsonSemSenha.toJson(user));
             } else if (cpf != null) {
                 UserModel user = userService.buscarPorCPF(cpf);
-                ctx.result(gson.toJson(user));
+                ctx.result(gsonSemSenha.toJson(user));
             } else {
                 List<UserModel> users = userService.buscarTodosOsUsuario();
-                String jsonConversor = gson.toJson(users);
+                String jsonConversor = gsonSemSenha.toJson(users);
                 ctx.result(jsonConversor);
             }
         });
@@ -64,7 +65,7 @@ public class UserController {
                 ctx.status(403).result("Acesso negado");
                 return;
             }
-            UserModel postUser = gson.fromJson(ctx.body(), UserModel.class);
+            UserModel postUser = gsonComSenha.fromJson(ctx.body(), UserModel.class);
             userService.criarUsuario(
                 postUser.getEmail(),
                 postUser.getNome(),
@@ -84,7 +85,7 @@ public class UserController {
                 ctx.status(403).result("Acesso negado");
                 return;
             }
-            UserModel atualizarUser = gson.fromJson(ctx.body(), UserModel.class);
+            UserModel atualizarUser = gsonComSenha.fromJson(ctx.body(), UserModel.class);
             userService.atualizarUsuario(
                 id,
                 atualizarUser.getTelefone(), 
@@ -102,7 +103,7 @@ public class UserController {
                 return;
             }
             int id = Integer.parseInt(ctx.pathParam("id"));
-            UserModel atualizarAtivoUser = gson.fromJson(ctx.body(), UserModel.class);
+            UserModel atualizarAtivoUser = gsonComSenha.fromJson(ctx.body(), UserModel.class);
             userService.atualizarAtivo(
                 id,
                 atualizarAtivoUser.getAtivo()
@@ -115,7 +116,7 @@ public class UserController {
                 return;
             }
             int id = Integer.parseInt(ctx.pathParam("id"));
-            UserModel atualizarRole = gson.fromJson(ctx.body(), UserModel.class);
+            UserModel atualizarRole = gsonComSenha.fromJson(ctx.body(), UserModel.class);
             userService.atualizarRole(
                 id,
                 atualizarRole.getRole()
