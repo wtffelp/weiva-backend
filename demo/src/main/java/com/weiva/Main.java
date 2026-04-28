@@ -12,7 +12,14 @@ import io.javalin.Javalin;
 
 public class Main {
     public static void main(String[] args) {
-        Javalin javalin = Javalin.create().start(7000);
+        Javalin javalin = Javalin.create( config -> {
+            config.bundledPlugins.enableCors(cors -> {
+                cors.addRule(rule -> {
+                    // rule.allowHost("https://weiva.vercel.app");
+                    rule.anyHost();
+                });
+            });
+        }).start(7000);
         javalin.before(new AuthMiddleware());
 
         new AuthController().authRoutes(javalin);
