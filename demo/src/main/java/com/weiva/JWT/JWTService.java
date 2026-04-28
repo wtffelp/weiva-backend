@@ -8,7 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class JWTService {
 
-    private final String SECRET = "WeivaTempSecretKey";
+    private final String SECRET = System.getenv("JWT_SECRET");
 
     public String gerarToken(String userId, String role) {
         return JWT.create()
