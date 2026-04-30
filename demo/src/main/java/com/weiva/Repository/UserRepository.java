@@ -29,7 +29,8 @@ public class UserRepository {
 
     public List<UserModel> buscarTodosOsUsuario(){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM usuario WHERE ativo = 1")
+            // ALTERAÇÃO: Removido "WHERE ativo = 1" para que super_admin veja também usuários desativados.
+            return handle.createQuery("SELECT * FROM usuario")
             .mapToBean(UserModel.class)
             .list();
         });
