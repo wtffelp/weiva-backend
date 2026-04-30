@@ -12,7 +12,7 @@ public class AuthMiddleware implements Handler{
     
     @Override
     public void handle(Context ctx) throws Exception {
-        if ("OPTIONS".equals(ctx.method())) {
+        if (ctx.method() == HandlerType.OPTIONS) {
             return;
         }
 

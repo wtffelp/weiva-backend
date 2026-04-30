@@ -30,6 +30,11 @@ public class Main {
         //         ctx.status(200);
         //     }
         // });
+        //
+        // Tentativa 2: Verificação de OPTIONS dentro do AuthMiddleware
+        // ATENÇÃO: ctx.method() retorna HandlerType (enum), NÃO String!
+        // "OPTIONS".equals(ctx.method()) sempre retorna false.
+        // A forma correta é: ctx.method() == HandlerType.OPTIONS
 
         javalin.before(new AuthMiddleware());
 
