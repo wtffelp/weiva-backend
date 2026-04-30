@@ -12,6 +12,10 @@ public class AuthMiddleware implements Handler{
     
     @Override
     public void handle(Context ctx) throws Exception {
+        if ("OPTIONS".equals(ctx.method())) {
+            return;
+        }
+
         String path = ctx.path();
 
         boolean rotaPublica = 

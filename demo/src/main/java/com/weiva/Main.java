@@ -21,13 +21,16 @@ public class Main {
                 });
             });
         }).start(7000);
-        javalin.before(ctx -> {
-            if ("OPTIONS".equals(ctx.method())) {
-                ctx.result("");
-                ctx.status(200);
-                return;
-            }
-        });
+        // Tentativa 1: Handler de OPTIONS separado no Main (NÃO FUNCIONA no Javalin 6.x)
+        // O "return" dentro de javalin.before() NÃO impede a execução dos próximos middlewares.
+        // O AuthMiddleware ainda era executado por baixo, retornando 401 no OPTIONS.
+        // javalin.before(ctx -> {
+        //     if ("OPTIONS".equals(ctx.method())) {
+        //         ctx.result("");
+        //         ctx.status(200);
+        //     }
+        // });
+
         javalin.before(new AuthMiddleware());
 
         new AuthController().authRoutes(javalin);
