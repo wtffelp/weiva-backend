@@ -23,8 +23,9 @@ public class Main {
         }).start(7000);
         javalin.before(ctx -> {
             if ("OPTIONS".equals(ctx.method())) {
-                ctx.status(200).result("");
-                ctx.skipRemainingHandlers();
+                ctx.result("");
+                ctx.status(200);
+                return;
             }
         });
         javalin.before(new AuthMiddleware());
