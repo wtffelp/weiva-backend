@@ -50,8 +50,11 @@ public class ProdutoController {
                 return;
             }
             ProdutoModel postProd = gson.fromJson(ctx.body(), ProdutoModel.class);
+            // ALTERAÇÃO: postProd.getId() foi removido pois chegava como 0 (default do int primitivo).
+            // O id agora é gerado automaticamente pelo banco (auto-increment).
+            // O parâmetro "id" no service/repo ainda existe para compatibilidade, mas é ignorado.
             produtoService.criarProduto(
-                postProd.getId(), 
+                0, // antes: postProd.getId()
                 postProd.getNome(), 
                 postProd.getDescricao(), 
                 postProd.getPreco_unitario(), 
