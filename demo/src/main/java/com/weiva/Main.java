@@ -21,6 +21,11 @@ public class Main {
                 });
             });
         }).start(7000);
+        javalin.before(ctx -> {
+            if ("OPTIONS".equals(ctx.method())) {
+                ctx.status(200).result("");
+            }
+        });
         javalin.before(new AuthMiddleware());
 
         new AuthController().authRoutes(javalin);
