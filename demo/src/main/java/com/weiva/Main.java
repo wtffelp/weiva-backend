@@ -1,6 +1,7 @@
 package com.weiva;
 
 import com.weiva.Controller.AuthController;
+import com.weiva.Controller.BuscaController;
 import com.weiva.Controller.CategoriaController;
 import com.weiva.Controller.EnderecoController;
 import com.weiva.Controller.FarmaciaController;
@@ -23,6 +24,7 @@ public class Main {
         javalin.before(new AuthMiddleware());
 
         new AuthController().authRoutes(javalin);
+        new BuscaController().buscarRoute(javalin);
         new UserController().userRoutes(javalin);
         new FarmaciaController().farmaciaRoutes(javalin);
         new ProdutoController().produtoRoutes(javalin);
