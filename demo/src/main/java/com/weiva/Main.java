@@ -24,6 +24,7 @@ public class Main {
         javalin.before(ctx -> {
             if ("OPTIONS".equals(ctx.method())) {
                 ctx.status(200).result("");
+                ctx.skipRemainingHandlers();
             }
         });
         javalin.before(new AuthMiddleware());
