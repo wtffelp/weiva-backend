@@ -4,6 +4,7 @@ public class CategoriaModel {
     private int id;
     private String nome;
     private String descricao;
+    private int fk_categoria_pai_id;
 
     public CategoriaModel() {}
 
@@ -29,5 +30,13 @@ public class CategoriaModel {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public int getFk_categoria_pai_id(){
+        return fk_categoria_pai_id;
+    }
+
+    public void setFk_categoria_pai_id(int fk_categoria_pai_id) {
+        this.fk_categoria_pai_id = fk_categoria_pai_id;
     }
 }

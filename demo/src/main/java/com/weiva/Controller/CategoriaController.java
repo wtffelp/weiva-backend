@@ -23,10 +23,14 @@ public class CategoriaController {
         });
 
         app.get("/categorias", ctx -> {
+            String pai = ctx.queryParam("pai");
             String nome = ctx.queryParam("nome");
             if (nome != null) {
                 CategoriaModel cat = categoriaService.buscarPorNome(nome);
                 ctx.result(gson.toJson(cat));
+            } else if (pai != null){
+                int paiId = Integer.parseInt(pai);
+                ctx.result(gson.toJson(categoriaService.buscarPorId(paiId)));
             } else {
                 List<CategoriaModel> cat = categoriaService.buscarTodasAsCategorias();
                 ctx.result(gson.toJson(cat));
@@ -42,7 +46,8 @@ public class CategoriaController {
             CategoriaModel postCat = gson.fromJson(ctx.body(), CategoriaModel.class);
             categoriaService.criarCategoria(
                 postCat.getNome(),
-                postCat.getDescricao()
+                postCat.getDescricao(),
+                postCat.getFk_categoria_pai_id()
             );
         });
 

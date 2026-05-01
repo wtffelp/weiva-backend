@@ -9,11 +9,12 @@ import com.weiva.Model.CategoriaModel;
 
 public class CategoriaRepository {
     Jdbi jdbi = Database.getJdbi();
-    public CategoriaModel criarCategoria(String nome, String descricao) {
+    public CategoriaModel criarCategoria(String nome, String descricao, int fk_categoria_pai_id) {
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("INSERT INTO categoria (nome, descricao) VALUES (:nome, :descricao)")
+            return handle.createUpdate("INSERT INTO categoria (nome, descricao, fk_categoria_pai_id) VALUES (:nome, :descricao, :fk_categoria_pai_id)")
             .bind("nome", nome)
             .bind("descricao", descricao)
+            .bind("fk_categoria_pai_id", fk_categoria_pai_id)
             .execute();
         });
         CategoriaModel categoriaModel = buscarPorNome(nome);
@@ -23,6 +24,14 @@ public class CategoriaRepository {
     public List<CategoriaModel> buscarTodasAsCategorias(){
         return jdbi.withHandle(handle -> {
             return handle.createQuery("SELECT * FROM categoria")
+            .mapToBean(CategoriaModel.class)
+            .list();
+        });
+    }
+
+    public List<CategoriaModel> buscarPorPai(int fk_categoria_pai_id){
+        return (List<CategoriaModel>) jdbi.withHandle(handle -> {
+            return handle.createQuery("SELECT * FROM categoria WHERE fk_categoria_pai_id = :fk_categoria_pai_id")
             .mapToBean(CategoriaModel.class)
             .list();
         });

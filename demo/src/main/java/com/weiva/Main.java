@@ -21,20 +21,6 @@ public class Main {
                 });
             });
         }).start(7000);
-        // Tentativa 1: Handler de OPTIONS separado no Main (NÃO FUNCIONA no Javalin 6.x)
-        // O "return" dentro de javalin.before() NÃO impede a execução dos próximos middlewares.
-        // O AuthMiddleware ainda era executado por baixo, retornando 401 no OPTIONS.
-        // javalin.before(ctx -> {
-        //     if ("OPTIONS".equals(ctx.method())) {
-        //         ctx.result("");
-        //         ctx.status(200);
-        //     }
-        // });
-        //
-        // Tentativa 2: Verificação de OPTIONS dentro do AuthMiddleware
-        // ATENÇÃO: ctx.method() retorna HandlerType (enum), NÃO String!
-        // "OPTIONS".equals(ctx.method()) sempre retorna false.
-        // A forma correta é: ctx.method() == HandlerType.OPTIONS
 
         javalin.before(new AuthMiddleware());
 
