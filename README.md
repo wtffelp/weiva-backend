@@ -13,15 +13,6 @@ Marketplace de farmácias. API REST desenvolvida em Java com Javalin, JDBI3, Pos
 - Docker (deploy)
 - Render (hospedagem)
 
-## Variáveis de ambiente
-
-```
-DB_URL        = jdbc:postgresql://host:5432/weiva_db
-DB_USER       = usuario
-DB_PASSWORD   = senha
-JWT_SECRET    = chave_secreta
-```
-
 ---
 
 ## Rotas implementadas
