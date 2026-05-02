@@ -170,9 +170,5 @@ GET /busca?q=&preco_min=&preco_max=&farmacia_id=&categoria_id=&page=&limit=
 ## Segurança
 
 - Senhas hasheadas com BCrypt
-- CPF e CNPJ nao expostos nas respostas (Gson @Exclude)
-- JWT com secret via variavel de ambiente
-- CORS configurado (trocar anyHost() pela URL do frontend em producao)
-- Email duplicado retorna 409 Conflict
 - Senha nula no update nao sobrescreve a senha atual
 - A implementar: validar tipo e tamanho no upload de imagens, validar estoque ao criar pedido, validar se usuario comprou antes de avaliar
