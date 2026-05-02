@@ -1,7 +1,10 @@
 package com.weiva.Model;
 
+import com.weiva.Annotations.Exclude;
+
 public class FarmaciaModel {
     private int id;
+    @Exclude
     private String cnpj;
     private String nome;
     private String descricao;

@@ -101,6 +101,7 @@ public class UserRepository {
     }
 
     public UserModel autalizarUsuario(int id, String telefone, String email, String nome, String senha){
+        if (senha != null) {
         jdbi.withHandle(handle -> {
             return handle.createUpdate("UPDATE usuario SET telefone = :telefone, email = :email, nome = :nome, senha = :senha WHERE id = :id")
                 .bind("telefone", telefone)
@@ -110,8 +111,17 @@ public class UserRepository {
                 .bind("id", id)
                 .execute();
         });
-        UserModel userModel = buscarPorId(id);
-        return userModel;
+    } else {
+        jdbi.withHandle(handle -> {
+            return handle.createUpdate("UPDATE usuario SET telefone = :telefone, email = :email, nome = :nome WHERE id = :id")
+                .bind("telefone", telefone)
+                .bind("email", email)
+                .bind("nome", nome)
+                .bind("id", id)
+                .execute();
+        });
+    }
+    return buscarPorId(id);
     }
 
     public UserModel atualizarRole(int id, String role){

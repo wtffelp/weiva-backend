@@ -10,6 +10,12 @@ public class JWTService {
 
     private final String SECRET = System.getenv("JWT_SECRET");
 
+    public JWTService(){
+        if (SECRET == null) {
+            throw new RuntimeException("JWT_SECRET não configurado!");
+        }
+    }
+
     public String gerarToken(String userId, String role) {
         return JWT.create()
                 .withSubject(userId)

@@ -40,6 +40,10 @@ public class AuthController {
 
         app.post("/auth/register", ctx -> {
             UserModel body = gsonComSenha.fromJson(ctx.body(), UserModel.class);
+            if (userService.buscarPorEmail(body.getEmail()) != null){
+                ctx.status(409).result("Email já cadastrado");
+                return;
+            }
             UserModel novo = userService.criarUsuario(
                 body.getEmail(),
                 body.getNome(),

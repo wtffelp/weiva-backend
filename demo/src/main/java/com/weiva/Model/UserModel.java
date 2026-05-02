@@ -11,6 +11,7 @@ public class UserModel {
     private Timestamp criado_em;
     private String nome;
     private String email;
+    @Exclude
     private String cpf;
     private String telefone;
     private String role;
