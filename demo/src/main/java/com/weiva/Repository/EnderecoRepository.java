@@ -8,12 +8,11 @@ import org.jdbi.v3.core.Jdbi;
 import com.weiva.Config.Database;
 import com.weiva.Model.EnderecoModel;
 
-public class EnderecoRespository {
+public class EnderecoRepository {
     Jdbi jdbi = Database.getJdbi();
     public EnderecoModel criarEndereco(String logradouro, String numero, String bairro, String cidade, String estado, String cep, int fk_usuario_id){
         return jdbi.withHandle(handle -> {
             return handle.createUpdate("INSERT INTO endereco (logradouro, numero, bairro, cidade, estado, cep, fk_usuario_id) VALUES (:logradouro, :numero, :bairro, :cidade, :estado, :cep, :fk_usuario_id)")
-                .bind("logradouro", logradouro)
                 .bind("numero", numero)
                 .bind("bairro", bairro)
                 .bind("cidade", cidade)
@@ -47,13 +46,14 @@ public class EnderecoRespository {
         return ende;
     }
     
-    public EnderecoModel atualizarEndereco(int id, String logradouro, String numero, String bairro, String cidade, String cep){
+    public EnderecoModel atualizarEndereco(int id, String logradouro, String numero, String bairro, String cidade, String estado, String cep){
         jdbi.withHandle(handle -> {
             return handle.createUpdate("UPDATE endereco SET logradouro = :logradouro, numero = :numero, bairro = :bairro, cidade = :cidade, cep = :cep WHERE id = :id")
                 .bind("logradouro", logradouro)
                 .bind("numero", numero)
                 .bind("bairro", bairro)
                 .bind("cidade", cidade)
+                .bind("estado", estado)
                 .bind("cep", cep)
                 .bind("id", id)
                 .execute();

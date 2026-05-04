@@ -45,6 +45,7 @@ public class EnderecoController {
                 end.getNumero(),
                 end.getBairro(),
                 end.getCidade(),
+                end.getEstado(),
                 end.getCep()
             );
             ctx.status(200);
