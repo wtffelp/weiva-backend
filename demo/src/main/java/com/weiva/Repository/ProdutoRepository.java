@@ -98,7 +98,7 @@ public class ProdutoRepository {
 
     public ProdutoModel atualizarProduto(int id, String nome, String descricao, double preco_unitario, String caminho_galeria, int fk_farmacia_id, int fk_categoria_id){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("UPDATE produto SET nome = :nome, descricao = :descricao, preco_unitario = :preco_unitario, caminho_galeria = :caminho_galeria, fk_farmacia_id = :farmacia_id, fk_categoria_id = :fk_categoria_id WHERE id = :id")
+            return handle.createUpdate("UPDATE produto SET nome = :nome, descricao = :descricao, preco_unitario = :preco_unitario, caminho_galeria = :caminho_galeria, fk_farmacia_id = :fk_farmacia_id, fk_categoria_id = :fk_categoria_id WHERE id = :id")
                 .bind("nome", nome)
                 .bind("descricao", descricao)
                 .bind("preco_unitario", preco_unitario)
