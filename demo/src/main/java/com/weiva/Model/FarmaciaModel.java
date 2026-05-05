@@ -36,7 +36,7 @@ public class FarmaciaModel {
     public int getFk_usuario_id() { return fk_usuario_id; }
     public void setFk_usuario_id(int fk_usuario_id) { this.fk_usuario_id = fk_usuario_id; }
 
-    public int getativo() { return ativo; }
+    public int getAtivo() { return ativo; }
     public void setAtivo(int ativo) { this.ativo = ativo; }
 
 }
