@@ -85,7 +85,7 @@ public class FarmaciaController {
             FarmaciaModel atualizarAtivoFarma = gson.fromJson(ctx.body(), FarmaciaModel.class);
             farmaciaService.atualizarAtivo(
                 id,
-                atualizarAtivoFarma.getativo()
+                atualizarAtivoFarma.getAtivo()
             );
         });
 
