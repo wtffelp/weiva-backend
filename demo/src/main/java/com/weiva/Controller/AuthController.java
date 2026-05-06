@@ -64,5 +64,40 @@ public class AuthController {
             );
             ctx.status(201).result(gsonSemSenha.toJson(novo));
         });
+
+        app.post("/auth/refresh", ctx -> {
+            Map<String, String> request = gsonComSenha.fromJson(ctx.body(), Map.class);
+            String refreshTokenStr = request.get("refresh_token");
+
+            if (refreshTokenStr == null || refreshTokenStr.isEmpty()) {
+                ctx.status(400).result("Refresh token não fornecido");
+                return;
+            }
+
+            try {
+                // validar o refresh token (verifica se existe, esta ativ e não expirou)
+                RefreshTokenModel refreshToken = refreshTokenService.validarToken(refreshTokenStr);
+
+                // buscar usuario pelo id armazenado no refresh token
+                UserModel user = userService.buscarPorId(refreshToken.getFk_usuario_id());
+                if (user == null || user.getAtivo() == 0) {
+                    ctx.status(403).result("Usuario inválido ou desativado");
+                    return;
+                }
+
+                // gerar novo access token
+                String newAccessToken = jwtService.gerarToken(
+                    String.valueOf(user.getId()),
+                    user.getRole()
+                );
+
+                // retornar apenas o novo access token (refresh token continua o msesmo)
+                Map<String, String> response = new HashMap<>();
+                response.put("access_token", newAccessToken);
+                ctx.result(gsonComSenha.toJson(response));
+            } catch (RuntimeException e){
+                ctx.status(401).result("Refresh token inválido ou expirado");
+            }
+        });
     }
 }
