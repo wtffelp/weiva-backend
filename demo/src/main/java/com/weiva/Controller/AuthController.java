@@ -37,13 +37,13 @@ public class AuthController {
                 return;
             }
 
-            String acess_token = jwtService.gerarToken(
+            String access_token = jwtService.gerarToken(
                 String.valueOf(userDB.getId()),
                 userDB.getRole()
             );
             Map<String, String> response = new HashMap<>();
             RefreshTokenModel refreshToken = refreshTokenService.criarToken(userDB.getId());
-            response.put("acess_token", acess_token);
+            response.put("access_token", access_token);
             response.put("refresh_token", refreshToken.getToken());
             ctx.result(gsonComSenha.toJson(response));
         });
