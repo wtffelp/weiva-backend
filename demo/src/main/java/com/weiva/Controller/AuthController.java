@@ -1,10 +1,15 @@
 package com.weiva.Controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.weiva.Annotations.AnnotationExclusionStrategy;
 import com.weiva.JWT.JWTService;
+import com.weiva.Model.RefreshTokenModel;
 import com.weiva.Model.UserModel;
+import com.weiva.Service.RefreshTokenService;
 import com.weiva.Service.UserService;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -12,6 +17,7 @@ import io.javalin.Javalin;
 
 public class AuthController {
     private UserService userService = new UserService();
+    private RefreshTokenService refreshTokenService = new RefreshTokenService();
     private JWTService jwtService = new JWTService();
     private Gson gsonSemSenha = new GsonBuilder()
     .setExclusionStrategies(new AnnotationExclusionStrategy()).create();
@@ -31,11 +37,15 @@ public class AuthController {
                 return;
             }
 
-            String token = jwtService.gerarToken(
+            String acess_token = jwtService.gerarToken(
                 String.valueOf(userDB.getId()),
                 userDB.getRole()
             );
-            ctx.result(token);
+            Map<String, String> response = new HashMap<>();
+            RefreshTokenModel refreshToken = refreshTokenService.criarToken(userDB.getId());
+            response.put("acess_token", acess_token);
+            response.put("refresh_token", refreshToken.getToken());
+            ctx.result(gsonComSenha.toJson(response));
         });
 
         app.post("/auth/register", ctx -> {
