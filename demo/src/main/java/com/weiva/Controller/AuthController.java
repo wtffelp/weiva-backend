@@ -42,10 +42,18 @@ public class AuthController {
                 userDB.getRole()
             );
             Map<String, String> response = new HashMap<>();
-            RefreshTokenModel refreshToken = refreshTokenService.criarToken(userDB.getId());
-            response.put("access_token", access_token);
-            response.put("refresh_token", refreshToken.getToken());
-            ctx.result(gsonComSenha.toJson(response));
+            try {
+                RefreshTokenModel refreshToken = refreshTokenService.criarToken(userDB.getId());
+                if (refreshToken == null) {
+                    ctx.status(500).result("Erro: refreshToken é null após criarToken()");
+                    return;
+                }
+                response.put("access_token", access_token);
+                response.put("refresh_token", refreshToken.getToken());
+                ctx.result(gsonComSenha.toJson(response));
+            } catch (Exception e) {
+                ctx.status(500).result("Erro ao criar refresh token: "+ e.getMessage());
+            }
         });
 
         app.post("/auth/register", ctx -> {

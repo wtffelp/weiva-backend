@@ -15,13 +15,17 @@ public class RefreshTokenRepository {
 
     public RefreshTokenModel criarToken(String token, int fk_usuario_id, Timestamp expira_em){
         return jdbi.withHandle(handle -> {
-            return handle.createUpdate("INSERT INTO refresh_token (token, fk_usuario_id, expira_em) VALUES (:token, :fk_usuario_id, :expira_em)")
+            handle.createUpdate("INSERT INTO refresh_token (token, fk_usuario_id, expira_em) VALUES (:token, :fk_usuario_id, :expira_em)")
                 .bind("token", token)
                 .bind("fk_usuario_id", fk_usuario_id)
                 .bind("expira_em", expira_em)
-                .executeAndReturnGeneratedKeys("id")
+                .execute();
+
+                return handle.createQuery("SELECT * FROM refresh_token WHERE token = :token")
+                .bind("token", token)
                 .mapToBean(RefreshTokenModel.class)
-                .findOne().orElse(null);
+                .findOne()
+                .orElse(null);
         });
     }
     public RefreshTokenModel buscarPorToken(String token){
