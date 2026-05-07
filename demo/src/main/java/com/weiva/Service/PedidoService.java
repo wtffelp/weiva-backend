@@ -14,30 +14,52 @@ public class PedidoService {
     PedidoRepository pedidoRepository = new PedidoRepository();
 
     public PedidoModel criarPedido(int fk_usuario_id, int fk_farmacia_id, int fk_endereco_id, String metodo_pagamento, double subtotal, double taxa_entrega){
-        // usuario existe
-        if (userService.buscarPorId(fk_usuario_id) == null) {
-            throw new RuntimeException("Usuário não encontrado.");
+        try {
+            System.out.println("Creating order - user: " + fk_usuario_id + ", farmacia: " + fk_farmacia_id + ", endereco: " + fk_endereco_id);
+            
+            // usuario existe
+            if (userService.buscarPorId(fk_usuario_id) == null) {
+                throw new RuntimeException("Usuário não encontrado: " + fk_usuario_id);
+            }
+            System.out.println("User found");
+            
+            // farmacia existe e ta ativa
+            FarmaciaModel farmacia = farmaciaService.buscarPorId(fk_farmacia_id);
+            if (farmacia == null) {
+                throw new RuntimeException("Farmacia não encontrada: " + fk_farmacia_id);
+            }
+            if (farmacia.getAtivo() == 0) {
+                throw new RuntimeException("Farmacia desativada: " + fk_farmacia_id);
+            }
+            System.out.println("Farmacia found and active");
+            
+            // se o endereco existe e pertence ao usuario
+            EnderecoModel endereco = enderecoService.buscarPorId(fk_endereco_id);
+            if (endereco == null) {
+                throw new RuntimeException("Endereço não encontrado: " + fk_endereco_id);
+            }
+            if (endereco.getFk_usuario_id() != fk_usuario_id) {
+                throw new RuntimeException("Endereço " + fk_endereco_id + " não pertence ao usuário " + fk_usuario_id);
+            }
+            System.out.println("Endereco found and belongs to user");
+            
+            // metodo de pagamento valido
+            List<String> metodosValidos = List.of("pix", "cartao", "dinheiro");
+            if (!metodosValidos.contains(metodo_pagamento)) {
+                throw new RuntimeException("Metodo de pagamento inválido: " + metodo_pagamento);
+            }
+            System.out.println("Payment method valid");
+            
+            // calcular o total
+            double total = subtotal + taxa_entrega;
+            System.out.println("Subtotal: " + subtotal + ", Taxa: " + taxa_entrega + ", Total: " + total);
+            
+            return pedidoRepository.criarPedido(fk_usuario_id, fk_farmacia_id, fk_endereco_id, "pendente", metodo_pagamento, subtotal, taxa_entrega, total);
+        } catch (Exception e) {
+            System.err.println("Error in criarPedido: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
-        // farmacia existe e ta ativa
-        FarmaciaModel farmacia = farmaciaService.buscarPorId(fk_farmacia_id);
-        if (farmacia == null || farmacia.getAtivo() == 0) {
-            throw new RuntimeException("Farmacia não encontrada ou desativada.");
-        }
-        // se o endereco existe e pertence ao usuario
-        EnderecoModel endereco = enderecoService.buscarPorId(fk_endereco_id);
-        if (endereco == null || endereco.getFk_usuario_id() != fk_usuario_id) {
-            throw new RuntimeException("Endereço inválido");
-        }
-
-        // metodo de pagamento valido
-        List<String> metodosValidos = List.of("pix", "cartao", "dinheiro");
-        if (!metodosValidos.contains(metodo_pagamento)) {
-            throw new RuntimeException("Metodo de pagamento inválido.");
-        }
-        // calcular o total
-        double total = subtotal + taxa_entrega;
-        
-        return pedidoRepository.criarPedido(fk_usuario_id, fk_farmacia_id, fk_endereco_id, "pendente", metodo_pagamento, subtotal, taxa_entrega, total);
     }
     public List<PedidoModel> buscarTodosOsPedidos(){
         return pedidoRepository.buscarTodosOsPedidos();

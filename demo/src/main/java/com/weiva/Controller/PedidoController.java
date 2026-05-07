@@ -48,16 +48,27 @@ public class PedidoController {
             }
         });
         app.post("/pedido", ctx -> {
-            PedidoModel body = gson.fromJson(ctx.body(), PedidoModel.class);
-            PedidoModel novo = pedidoService.criarPedido(
-                body.getFk_usuario_id(),
-                body.getFk_farmacia_id(),
-                body.getFk_endereco_id(),
-                body.getMetodo_pagamento(),
-                body.getSubtotal(),
-                body.getTaxa_entrega()
-            );
-            ctx.status(201).result(gson.toJson(novo));
+            try {
+                PedidoModel body = gson.fromJson(ctx.body(), PedidoModel.class);
+                System.out.println("Creating order with data: fk_usuario_id=" + body.getFk_usuario_id() + 
+                    ", fk_farmacia_id=" + body.getFk_farmacia_id() + 
+                    ", fk_endereco_id=" + body.getFk_endereco_id() + 
+                    ", metodo_pagamento=" + body.getMetodo_pagamento());
+                
+                PedidoModel novo = pedidoService.criarPedido(
+                    body.getFk_usuario_id(),
+                    body.getFk_farmacia_id(),
+                    body.getFk_endereco_id(),
+                    body.getMetodo_pagamento(),
+                    body.getSubtotal(),
+                    body.getTaxa_entrega()
+                );
+                ctx.status(201).result(gson.toJson(novo));
+            } catch (Exception e) {
+                System.err.println("Error creating order: " + e.getMessage());
+                e.printStackTrace();
+                ctx.status(400).result("Erro: " + e.getMessage());
+            }
         });
 
         app.put("/pedido/{id}/status", ctx -> {
