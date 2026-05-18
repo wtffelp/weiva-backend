@@ -49,13 +49,19 @@ public class FarmaciaController {
 
         app.post("/farmacias", ctx -> {
             String role = ctx.attribute("role");
-            if (!role.equals("admin") && !role.equals("super_admin")) {
+            if (!role.equals("admin") && !role.equals("super_admin") && !role.equals("farmacia")) {
                 ctx.status(403).result("Acesso negado");
                 return;
             }
             FarmaciaModel postFarma = gson.fromJson(ctx.body(), FarmaciaModel.class);
+            int fk_usuario_id;
+            if (role.equals("farmacia")) {
+                fk_usuario_id = Integer.parseInt(ctx.attribute("user"));
+            } else {
+                fk_usuario_id = postFarma.getFk_usuario_id();
+            }
             farmaciaService.criarFarmacia(
-                postFarma.getFk_usuario_id(),
+                fk_usuario_id,
                 postFarma.getCnpj(),
                 postFarma.getNome(),
                 postFarma.getDescricao(),
@@ -67,11 +73,19 @@ public class FarmaciaController {
 
         app.put("/farmacias/{id}", ctx -> {
             String role = ctx.attribute("role");
-            if(!role.equals("admin") && !role.equals("super_admin")){
+            if(!role.equals("admin") && !role.equals("super_admin") && !role.equals("farmacia")){
                 ctx.status(403).result("Acesso negado");
                 return;
             }
             int id = Integer.parseInt(ctx.pathParam("id"));
+            if (role.equals("farmacia")) {
+                int userId = Integer.parseInt(ctx.attribute("user"));
+                FarmaciaModel farma = farmaciaService.buscarPorUsuario(userId);
+                if (farma == null || farma.getId() != id) {
+                    ctx.status(403).result("Acesso negado");
+                    return;
+                }
+            }
             FarmaciaModel atualizarFarmacia = gson.fromJson(ctx.body(), FarmaciaModel.class);
             farmaciaService.atualizarFarmacia(
                 id,
