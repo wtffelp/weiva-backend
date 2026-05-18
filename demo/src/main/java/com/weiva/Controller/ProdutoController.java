@@ -5,13 +5,16 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.weiva.Annotations.AnnotationExclusionStrategy;
+import com.weiva.Model.FarmaciaModel;
 import com.weiva.Model.ProdutoModel;
+import com.weiva.Service.FarmaciaService;
 import com.weiva.Service.ProdutoService;
 
 import io.javalin.Javalin;
 
 public class ProdutoController {
     ProdutoService produtoService = new ProdutoService();
+    FarmaciaService farmaciaService = new FarmaciaService();
     private static Gson gson = new GsonBuilder()
     .setExclusionStrategies(new AnnotationExclusionStrategy()).create();
     
@@ -45,14 +48,21 @@ public class ProdutoController {
 
         app.post("/produto", ctx -> {
             String role = ctx.attribute("role");
-            if (!role.equals("admin") && !role.equals("super_admin")) {
+            if (!role.equals("admin") && !role.equals("super_admin") && !role.equals("farmacia")) {
                 ctx.status(403).result("Acesso negado");
                 return;
             }
             ProdutoModel postProd = gson.fromJson(ctx.body(), ProdutoModel.class);
-            // ALTERAÇÃO: postProd.getId() foi removido pois chegava como 0 (default do int primitivo).
-            // O id agora é gerado automaticamente pelo banco (auto-increment).
-            // O parâmetro "id" no service/repo ainda existe para compatibilidade, mas é ignorado.
+
+            if (role.equals("farmacia")) {
+                int usedId = Integer.parseInt(ctx.attribute("user"));
+                FarmaciaModel farma = farmaciaService.buscarPorUsuario(usedId);
+                if (farma == null || farma.getId() != postProd.getFk_farmacia_id()) {
+                    ctx.status(403).result("Acesso negado");
+                    return;
+                }
+            }
+            
             produtoService.criarProduto(
                 0, // antes: postProd.getId()
                 postProd.getNome(), 
@@ -66,11 +76,20 @@ public class ProdutoController {
 
         app.put("/produto/{id}", ctx -> {
             String role = ctx.attribute("role");
-            if (!role.equals("admin") && !role.equals("super_admin")) {
+            if (!role.equals("admin") && !role.equals("super_admin") && !role.equals("farmacia")) {
                 ctx.status(403).result("Acesso negado");
                 return;
             }
             int id = Integer.parseInt(ctx.pathParam("id"));
+            if (role.equals("farmacia")) {
+                int userId = Integer.parseInt(ctx.attribute("user"));
+                FarmaciaModel farma = farmaciaService.buscarPorUsuario(userId);
+                ProdutoModel prod = produtoService.buscarPorId(id);
+                if (farma == null || prod == null || farma.getId() != prod.getFk_farmacia_id()) {
+                    ctx.status(403).result("Acesso negado.");
+                    return;
+                }
+            }
             ProdutoModel atualizarProduto = gson.fromJson(ctx.body(), ProdutoModel.class);
             produtoService.atualizarProduto(
                 id,
@@ -85,11 +104,20 @@ public class ProdutoController {
 
         app.put("/produto/{id}/ativo", ctx -> {
             String role = ctx.attribute("role");
-            if (!role.equals("admin") && !role.equals("super_admin")) {
+            if (!role.equals("admin") && !role.equals("super_admin") && !role.equals("farmacia")) {
                 ctx.status(403).result("Acesso negado");
                 return;
             }
             int id = Integer.parseInt(ctx.pathParam("id"));
+            if (role.equals("farmacia")) {
+                int userId = Integer.parseInt(ctx.attribute("user"));
+                FarmaciaModel farma = farmaciaService.buscarPorUsuario(userId);
+                ProdutoModel prod = produtoService.buscarPorId(id);
+                if (farma == null || prod == null || farma.getId() != prod.getFk_farmacia_id()) {
+                    ctx.status(403).result("Acesso negado.");
+                    return;
+                }
+            }
             ProdutoModel atualizarProdutoAtivo = gson.fromJson(ctx.body(), ProdutoModel.class);
             produtoService.atualizarAtivo(
                 id,
