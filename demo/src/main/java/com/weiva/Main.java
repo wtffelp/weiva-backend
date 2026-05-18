@@ -5,6 +5,7 @@ import com.weiva.Controller.BuscaController;
 import com.weiva.Controller.CategoriaController;
 import com.weiva.Controller.EnderecoController;
 import com.weiva.Controller.FarmaciaController;
+import com.weiva.Controller.ItemPedidoController;
 import com.weiva.Controller.PedidoController;
 import com.weiva.Controller.ProdutoController;
 import com.weiva.Controller.UserController;
@@ -33,5 +34,6 @@ public class Main {
         new CategoriaController().categoriaRoutes(javalin);
         new EnderecoController().enderecoRoutes(javalin);
         new PedidoController().pedidoRoutes(javalin);
+        new ItemPedidoController().itemPedidoRoutes(javalin);
     }
 }
