@@ -64,6 +64,17 @@ public class FarmaciaRepository {
         });
     }
 
+    public FarmaciaModel buscarPorUsuario(int fk_usuario_id){
+        FarmaciaModel farma = jdbi.withHandle(handle -> {
+            Optional<FarmaciaModel> result = handle.createQuery("SELECT * FROM farmacia WHERE fk_usuario_id = :fk_usuario_id")
+            .bind("fk_usuario_id", fk_usuario_id)
+            .mapToBean(FarmaciaModel.class)
+            .findOne();
+            return result.orElse(null);
+        });
+        return farma;
+    }
+
     public List<FarmaciaModel> buscarPorAvalicao(double avaliacao) {
         return jdbi.withHandle(handle -> {
             return handle.createQuery("SELECT * FROM farmacia WHERE avaliacao = :avaliacao AND ativo = 1")

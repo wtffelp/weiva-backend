@@ -26,8 +26,13 @@ public class FarmaciaController {
             String cnpj = ctx.queryParam("cnpj");
             String nome = ctx.queryParam("nome");
             String avaliacao = ctx.queryParam("avaliacao");
+            String fk_usuario_id = ctx.queryParam("fk_usuario_id");
             if (cnpj != null) {
                 FarmaciaModel farma = farmaciaService.buscarPorCnpj(cnpj);
+                ctx.result(gson.toJson(farma));
+            } else if (fk_usuario_id != null){
+                int farmaInt = Integer.parseInt(fk_usuario_id);
+                FarmaciaModel farma = farmaciaService.buscarPorUsuario(farmaInt);
                 ctx.result(gson.toJson(farma));
             } else if (nome != null) {
                 List<FarmaciaModel> farma = farmaciaService.buscarPorNome(nome);
