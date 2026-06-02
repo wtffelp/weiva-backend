@@ -41,7 +41,7 @@ public class ProdutoService {
     }
 
     public ProdutoModel atualizarProduto(int id, String nome, String descricao, double preco_unitario, String caminho_galeria, int fk_farmacia_id, int fk_categoria_id){
-        return produtoRepository.atualizarProduto(id, nome, descricao, preco_unitario, descricao, fk_farmacia_id, fk_categoria_id);
+        return produtoRepository.atualizarProduto(id, nome, descricao, preco_unitario, caminho_galeria, fk_farmacia_id, fk_categoria_id);
     }
 
     public ProdutoModel atualizarAtivo(int id, int ativo){
