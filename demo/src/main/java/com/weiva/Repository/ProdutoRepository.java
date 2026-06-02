@@ -12,9 +12,6 @@ public class ProdutoRepository {
     Jdbi jdbi = Database.getJdbi();
 
     public ProdutoModel criarProduto(int id, String nome, String descricao, double preco_unitario, String caminho_galeria, int fk_farmacia_id, int fk_categoria_id){
-        // ALTERAÇÃO: O id era passado pelo controller mas chegava como 0 (default do int primitivo).
-        // Como o banco gera o id automaticamente (auto-increment), removemos o id do INSERT.
-        // Para recuperar o produto criado, usamos executeAndReturnGeneratedKeys para pegar o id gerado.
         ProdutoModel produto = jdbi.withHandle(handle -> {
             int generatedId = handle.createUpdate(
                 "INSERT INTO produto (nome, descricao, preco_unitario, caminho_galeria, fk_farmacia_id, fk_categoria_id) VALUES (:nome, :descricao, :preco_unitario, :caminho_galeria, :fk_farmacia_id, :fk_categoria_id)")
@@ -89,7 +86,7 @@ public class ProdutoRepository {
 
     public List<ProdutoModel> buscarPorCategoria(int fk_categoria_id){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM produto WHERE fk_categoia_id AND ativo = 1")
+            return handle.createQuery("SELECT * FROM produto WHERE fk_categoria_id AND ativo = 1")
                 .bind("fk_categoria_id", fk_categoria_id)
                 .mapToBean(ProdutoModel.class)
                 .list();
