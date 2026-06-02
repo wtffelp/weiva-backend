@@ -86,7 +86,7 @@ public class ProdutoRepository {
 
     public List<ProdutoModel> buscarPorCategoria(int fk_categoria_id){
         return jdbi.withHandle(handle -> {
-            return handle.createQuery("SELECT * FROM produto WHERE fk_categoria_id AND ativo = 1")
+            return handle.createQuery("SELECT * FROM produto WHERE fk_categoria_id = :fk_categoria_id AND ativo = 1")
                 .bind("fk_categoria_id", fk_categoria_id)
                 .mapToBean(ProdutoModel.class)
                 .list();
