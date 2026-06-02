@@ -21,7 +21,7 @@ public class EnderecoService {
     }
 
     public EnderecoModel atualizarEndereco(int id, String logradouro, String numero, String bairro, String cidade, String estado, String cep) {
-        return enderecoRespository.atualizarEndereco(id, logradouro, numero, bairro, estado, cidade, cep);
+        return enderecoRespository.atualizarEndereco(id, logradouro, numero, bairro, cidade, estado, cep);
     }
 
     public void deletarEndereco(int id){
