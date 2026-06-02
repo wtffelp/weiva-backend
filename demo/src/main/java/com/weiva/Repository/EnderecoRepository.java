@@ -49,7 +49,7 @@ public class EnderecoRepository {
     
     public EnderecoModel atualizarEndereco(int id, String logradouro, String numero, String bairro, String cidade, String estado, String cep){
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("UPDATE endereco SET logradouro = :logradouro, numero = :numero, bairro = :bairro, cidade = :cidade, cep = :cep WHERE id = :id")
+            return handle.createUpdate("UPDATE endereco SET logradouro = :logradouro, numero = :numero, bairro = :bairro, cidade = :cidade, estado = :estado, cep = :cep WHERE id = :id")
                 .bind("logradouro", logradouro)
                 .bind("numero", numero)
                 .bind("bairro", bairro)
