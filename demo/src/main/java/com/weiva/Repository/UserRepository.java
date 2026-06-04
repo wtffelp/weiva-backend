@@ -10,13 +10,14 @@ import com.weiva.Model.UserModel;
 
 public class UserRepository {
     Jdbi jdbi = Database.getJdbi();
-    public UserModel criarUsuario(String email, String nome, String cpf, String telefone, String senha, String role) {
+    public UserModel criarUsuario(String email, String nome, String foto_perfil_url, String cpf, String telefone, String senha, String role) {
         jdbi.withHandle(handle -> {
             return handle.createUpdate("""
-                    INSERT INTO usuario (email, nome, cpf, telefone, senha, role) VALUES (:email, :nome, :cpf, :telefone, :senha, :role)
+                    INSERT INTO usuario (email, nome, foto_perfil_url, cpf, telefone, senha, role) VALUES (:email, :nome, :cpf, :telefone, :senha, :role)
                     """)
                 .bind("email", email)
                 .bind("nome", nome)
+                .bind("foto_perfil_url", foto_perfil_url)
                 .bind("cpf", cpf)
                 .bind("telefone", telefone)
                 .bind("senha", senha)
@@ -100,11 +101,12 @@ public class UserRepository {
         return userModel;
     }
 
-    public UserModel autalizarUsuario(int id, String telefone, String email, String nome, String senha){
+    public UserModel autalizarUsuario(int id, String telefone, String foto_perfil_url, String email, String nome, String senha){
         if (senha != null) {
         jdbi.withHandle(handle -> {
-            return handle.createUpdate("UPDATE usuario SET telefone = :telefone, email = :email, nome = :nome, senha = :senha WHERE id = :id")
+            return handle.createUpdate("UPDATE usuario SET telefone = :telefone, foto_perfil_url = :foto_perfil_ur email = :email, nome = :nome, senha = :senha WHERE id = :id")
                 .bind("telefone", telefone)
+                .bind("foto_perfil_url", foto_perfil_url)
                 .bind("email", email)
                 .bind("nome", nome)
                 .bind("senha", senha)
@@ -121,7 +123,7 @@ public class UserRepository {
                 .execute();
         });
     }
-    return buscarPorId(id);
+        return buscarPorId(id);
     }
 
     public UserModel atualizarRole(int id, String role){
