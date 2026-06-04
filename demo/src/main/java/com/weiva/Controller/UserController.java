@@ -69,6 +69,7 @@ public class UserController {
             userService.criarUsuario(
                 postUser.getEmail(),
                 postUser.getNome(),
+                postUser.getFoto_perfil_url(),
                 postUser.getCPF(),
                 postUser.getTelefone(),
                 postUser.getSenha(),
@@ -89,6 +90,7 @@ public class UserController {
             userService.atualizarUsuario(
                 id,
                 atualizarUser.getTelefone(), 
+                atualizarUser.getFoto_perfil_url(),
                 atualizarUser.getEmail(), 
                 atualizarUser.getNome(), 
                 atualizarUser.getSenha()

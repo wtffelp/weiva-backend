@@ -65,6 +65,7 @@ public class AuthController {
             UserModel novo = userService.criarUsuario(
                 body.getEmail(),
                 body.getNome(),
+                body.getFoto_perfil_url(),
                 body.getCPF(),
                 body.getTelefone(),
                 body.getSenha(),
