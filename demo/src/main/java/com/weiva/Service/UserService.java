@@ -10,10 +10,10 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 public class UserService {
     UserRepository userRepository = new UserRepository();
 
-    public UserModel criarUsuario(String email, String nome, String cpf, String telefone, String senha, String role){
+    public UserModel criarUsuario(String email, String nome, String foto_perfil_url, String cpf, String telefone, String senha, String role){
         if (buscarPorEmail(email) == null) {
             String hashedPassword = BCrypt.withDefaults().hashToString(12, senha.toCharArray());
-            return userRepository.criarUsuario(email, nome, cpf, telefone, hashedPassword, role);
+            return userRepository.criarUsuario(email, nome, foto_perfil_url, cpf, telefone, hashedPassword, role);
         } else {
             throw new RuntimeException("Usuario ja cadastrado");
         }
@@ -43,7 +43,7 @@ public class UserService {
         return userRepository.buscarPorTelefone(telefone);
     }
 
-    public UserModel atualizarUsuario(int id, String telefone, String email, String nome, String senha){
+    public UserModel atualizarUsuario(int id, String telefone, String foto_perfil_url, String email, String nome, String senha){
     UserModel user = buscarPorId(id);
         if (user == null) {
             throw new RuntimeException("Usuário não encontrado.");
@@ -52,7 +52,7 @@ public class UserService {
         if (senha != null && !senha.isEmpty()) {
             hashedPassword = BCrypt.withDefaults().hashToString(12, senha.toCharArray());
         }
-        return userRepository.autalizarUsuario(id, telefone, email, nome, hashedPassword);
+        return userRepository.autalizarUsuario(id, telefone, foto_perfil_url, email, nome, hashedPassword);
     }
 
     public UserModel atualizarAtivo(int id, int ativo){
