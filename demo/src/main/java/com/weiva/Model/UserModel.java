@@ -14,6 +14,7 @@ public class UserModel {
     @Exclude
     private String cpf;
     private String telefone;
+    private String foto_perfil_url;
     private String role;
     private int ativo;
 
@@ -39,6 +40,9 @@ public class UserModel {
 
     public String getTelefone(){ return telefone; }
     public void setTelefone(String telefone){ this.telefone = telefone; }
+
+    public String getFoto_perfil_url(){ return foto_perfil_url; }
+    public void setFoto_perfil_url(String foto_perfil_url){ this.foto_perfil_url = foto_perfil_url;}
 
     public String getRole(){ return role; }
     public void setRole(String role){ this.role = role; }
